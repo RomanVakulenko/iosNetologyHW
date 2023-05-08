@@ -16,6 +16,18 @@ class FeedViewController: UIViewController {
         return button
     }()
 
+
+    let postObject: Post
+
+    init(post: Post) {
+        self.postObject = post
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required convenience init?(coder aDecoder: NSCoder) {
+           self.init(coder: aDecoder)
+       }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,8 +54,12 @@ class FeedViewController: UIViewController {
 
     @objc func buttonPressed(_ sender: UIButton) {
         let postViewController = UIViewController()
-        postViewController.title = "Post"
+        postViewController.title = postObject.title
         postViewController.view.backgroundColor = .yellow
+//        postViewController.navigationItem = UINavigationItem(title: <#T##String#>)
+//На PostViewController добавьте Bar Button Item в навигейшн бар. При нажатии на него должен открываться новый контроллер InfoViewController. Контроллер должен показаться модально.
+//        На InfoViewController создайте кнопку. При нажатии на неё должен показаться UIAlertController с заданным title, message и двумя UIAlertAction. При нажатии на каждый UIAlertAction в консоль должно выводиться сообщение.
+
 
         self.navigationController?.pushViewController(postViewController, animated: true)
     }

@@ -14,6 +14,7 @@
 		AD79F4CF2A0556360035A66A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD79F4CD2A0556360035A66A /* LaunchScreen.storyboard */; };
 		AD7AAEBA2A07754D00058A30 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AAEB92A07754D00058A30 /* FeedViewController.swift */; };
 		AD7AAEBC2A07756000058A30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */; };
+		ADCE4C812A08E78500A4575E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE4C802A08E78500A4575E /* Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		AD79F4D02A0556360035A66A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD7AAEB92A07754D00058A30 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		ADCE4C802A08E78500A4575E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				AD79F4C22A0556350035A66A /* AppDelegate.swift */,
 				AD79F4C42A0556350035A66A /* SceneDelegate.swift */,
+				ADCE4C802A08E78500A4575E /* Post.swift */,
 				AD7AAEB92A07754D00058A30 /* FeedViewController.swift */,
 				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
 				AD79F4C62A0556350035A66A /* ViewController.swift */,
@@ -143,6 +146,7 @@
 				AD79F4C72A0556350035A66A /* ViewController.swift in Sources */,
 				AD79F4C32A0556350035A66A /* AppDelegate.swift in Sources */,
 				AD7AAEBC2A07756000058A30 /* ProfileViewController.swift in Sources */,
+				ADCE4C812A08E78500A4575E /* Post.swift in Sources */,
 				AD7AAEBA2A07754D00058A30 /* FeedViewController.swift in Sources */,
 				AD79F4C52A0556350035A66A /* SceneDelegate.swift in Sources */,
 			);

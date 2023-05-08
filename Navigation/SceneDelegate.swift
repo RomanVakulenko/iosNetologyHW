@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
 
-        let userProfileFeedVC = FeedViewController()
+        let userProfileFeedVC = FeedViewController(post: Post.init(title: "Post's title"))
         userProfileFeedVC.title = "userProfileFeed"
         userProfileFeedVC.view.backgroundColor = .lightGray
         let userProfileFeedNavController = UINavigationController(rootViewController: userProfileFeedVC)
