@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
-        guard let scene = (scene as? UIWindowScene) else { return }
+        guard let scene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: scene)
 
         let userProfileFeedVC = FeedViewController(post: Post.init(title: "Post's title"))
@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         userProfilePageNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 1)
 
         tabBarController.viewControllers = [userProfileFeedNavController, userProfilePageNavController]
-        // или через функциональное программирование
+        // или через функциональное программирование добавить в табБарКонтроллер пару НавигацКонтроллеров
         // let controllers = [userProfileFeedNavController, userProfilePageNavController]
         // tabBarController.viewControllers = controllers.map { UINavigationController(rootViewController: $0 }
 

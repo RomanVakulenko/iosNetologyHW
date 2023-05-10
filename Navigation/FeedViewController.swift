@@ -16,9 +16,7 @@ class FeedViewController: UIViewController {
         return button
     }()
 
-
     let postObject: Post
-
     init(post: Post) {
         self.postObject = post
         super.init(nibName: nil, bundle: nil)
@@ -52,26 +50,13 @@ class FeedViewController: UIViewController {
         actionButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     }
 
+
     @objc func buttonPressed(_ sender: UIButton) {
-        let postViewController = UIViewController()
+        let postViewController = PostViewController()
         postViewController.title = postObject.title
         postViewController.view.backgroundColor = .yellow
-//        postViewController.navigationItem = UINavigationItem(title: <#T##String#>)
-//На PostViewController добавьте Bar Button Item в навигейшн бар. При нажатии на него должен открываться новый контроллер InfoViewController. Контроллер должен показаться модально.
-//        На InfoViewController создайте кнопку. При нажатии на неё должен показаться UIAlertController с заданным title, message и двумя UIAlertAction. При нажатии на каждый UIAlertAction в консоль должно выводиться сообщение.
-
 
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
