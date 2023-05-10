@@ -18,11 +18,12 @@ class PostViewController: UIViewController {
     }
 
     @objc func rightHandAction() {
-        let infoViewController = UIViewController()
+        let infoViewController = InfoViewController()
         infoViewController.view.backgroundColor = .green
         infoViewController.modalTransitionStyle = .coverVertical
         infoViewController.modalPresentationStyle = .popover
 
         present(infoViewController, animated: true)
+
     }
 }

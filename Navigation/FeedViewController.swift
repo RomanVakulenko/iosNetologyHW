@@ -11,8 +11,11 @@ class FeedViewController: UIViewController {
 
     private lazy var actionButton: UIButton = {
         let button = UIButton()
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("step to post", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         return button
     }()
 
@@ -28,18 +31,17 @@ class FeedViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.addSubview(actionButton)
 
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             actionButton.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 20.0
+                constant: 80.0
             ),
             actionButton.trailingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -20.0
+                constant: -80.0
             ),
             actionButton.centerYAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.centerYAnchor
