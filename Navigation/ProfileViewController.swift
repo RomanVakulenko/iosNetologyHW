@@ -1,19 +1,17 @@
 //
-//  ViewController.swift
+//  ProfileViewController.swift
 //  Navigation
 //
-//  Created by Roman Vakulenko on 05.05.2023.
+//  Created by Roman Vakulenko on 07.05.2023.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
-
-
 }
-
