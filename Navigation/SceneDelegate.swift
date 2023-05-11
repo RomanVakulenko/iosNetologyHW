@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userProfileFeedNavController = UINavigationController(rootViewController: userProfileFeedVC)
 
         let userProfilePageVC = ProfileViewController()
-        userProfilePageVC.title = "userProfilePage"
+        userProfilePageVC.title = "MyProfile"
         userProfilePageVC.view.backgroundColor = .cyan
         let userProfilePageNavController = UINavigationController(rootViewController: userProfilePageVC)
 
@@ -32,7 +32,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let iconConfig = UIImage.SymbolConfiguration(scale: .large)
         let newspaperIcon = UIImage(systemName: "newspaper", withConfiguration: iconConfig)
         userProfileFeedNavController.tabBarItem = UITabBarItem(title: "userProfileFeed", image: newspaperIcon, tag: 0)
-        userProfilePageNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 1)
+
+        userProfilePageNavController.tabBarItem.image = UIImage(named: "figure.mixed.cardio")
 
         tabBarController.viewControllers = [userProfileFeedNavController, userProfilePageNavController]
         // или через функциональное программирование добавить в табБарКонтроллер пару НавигацКонтроллеров
