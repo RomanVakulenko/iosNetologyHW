@@ -23,10 +23,7 @@ class ProfileViewController: UIViewController {
 
     override func viewWillLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        profileHeaderView.frame = self.view.safeAreaLayoutGuide.layoutFrame//к моменту отрисовки subview размеры superView будут корректны (потому тутб а не в ДидЛоад)
-        profileHeaderView.setButton()
+        profileHeaderView.frame = self.view.safeAreaLayoutGuide.layoutFrame//к моменту отрисовки subview размеры superView будут корректны (потому тут, а не в ДидЛоад)
     }
-
-
-
+    
 }

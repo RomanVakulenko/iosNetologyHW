@@ -9,11 +9,11 @@ import UIKit
 
 class ProfileHeaderView: UIView {
 
-    let avatarView: UIView
-    let nameLabel: UILabel
-    let statusLabel: UILabel
-    var textField: UITextField
-    let button: UIButton
+    let avatarView: UIView?
+    let nameLabel: UILabel?
+    let statusLabel: UILabel?
+    var textField: UITextField?
+    let button: UIButton?
 
     var statusText: String?
 
@@ -23,13 +23,7 @@ class ProfileHeaderView: UIView {
         statusLabel = UILabel()
         textField = UITextField()
         button = UIButton()
-
         super.init(frame: frame)
-        addSubview(avatarView)
-        addSubview(nameLabel)
-        addSubview(statusLabel)
-        addSubview(textField)
-        addSubview(button)
     }
 
     required init?(coder: NSCoder) {
@@ -42,6 +36,7 @@ class ProfileHeaderView: UIView {
         setNameLabel()
         setStatusLabel()
         setStatusChangingTextField()
+        showStatusButton()
     }
 
     let imageView = UIImageView(image: UIImage(named: "Colors"))
@@ -50,7 +45,7 @@ class ProfileHeaderView: UIView {
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.clipsToBounds = true
         (imageView.layer.borderWidth, imageView.layer.borderColor) = (3, UIColor.white.cgColor)
-        avatarView.addSubview(imageView)
+        addSubview(imageView)
     }
 
     let label = UILabel()
@@ -59,7 +54,7 @@ class ProfileHeaderView: UIView {
         label.font = UIFont.boldSystemFont(ofSize: 18.0)
         label.textColor = .black
         label.text = "Colors in iOS"
-        nameLabel.addSubview(label)
+        addSubview(label)
     }
 
     private func setStatusLabel() {
@@ -67,43 +62,43 @@ class ProfileHeaderView: UIView {
         status.text = "Waiting for something..."
         status.font = UIFont.systemFont(ofSize: 14)
         status.textColor = .gray
-        statusLabel.addSubview(status)
+        addSubview(status)
     }
 
+    let statusChangingTextField = UITextField(frame: CGRect(x: 157, y: 16+100-40, width: 200, height: 40))
     func setStatusChangingTextField() {
-        let statusChangingTextField = UITextField(frame: CGRect(x: self.center.x-50, y: 16+100-40, width: self.frame.width/2, height: 40))
         statusChangingTextField.placeholder = "  Type new status"
         statusChangingTextField.font = UIFont.systemFont(ofSize: 15)
-        statusChangingTextField.textColor = .black
-        statusChangingTextField.backgroundColor = .white
+        statusChangingTextField.textColor = UIColor.black
+        statusChangingTextField.backgroundColor = UIColor.white
         (statusChangingTextField.layer.borderWidth, statusChangingTextField.layer.borderColor) = (1, UIColor.black.cgColor)
         statusChangingTextField.layer.cornerRadius = 12
-        textField.addSubview(statusChangingTextField)
+        addSubview(statusChangingTextField)
 
         statusChangingTextField.addTarget(self, action: #selector(statusTextChanged(_:)), for: UIControl.Event.editingChanged)
-    }
+        }
 
     @objc func statusTextChanged(_ sender: UITextField) {
-        guard let newStatusText = textField.text else { return }
+        guard let newStatusText = statusChangingTextField.text else { return }
         statusText = newStatusText
     }
 
-    func setButton(){
-        let showStatusButton = UIButton(frame: CGRect(x: 16, y: 2*16+100, width: self.frame.width-32, height: 50))
-        showStatusButton.backgroundColor = .systemBlue
-        showStatusButton.layer.cornerRadius = 4
-        showStatusButton.setTitle("Set status", for: .normal)
-        showStatusButton.setTitleColor(UIColor.white, for: .normal)
-        (showStatusButton.layer.shadowOffset.width, showStatusButton.layer.shadowOffset.height, showStatusButton.layer.shadowRadius) = (4, 4, 4)
-        showStatusButton.layer.shadowColor = UIColor.black.cgColor
-        showStatusButton.layer.shadowOpacity = 0.7
-        button.addSubview(showStatusButton)
+    func showStatusButton() {
+        let button = UIButton(frame: CGRect(x: 16, y: 2*16+100, width: self.frame.width-32, height: 50))
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 4
+        button.setTitle("Set status", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        (button.layer.shadowOffset.width, button.layer.shadowOffset.height, button.layer.shadowRadius) = (4, 4, 4)
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.7
+        addSubview(button)
 
-        showStatusButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+
     }
 
     @objc func buttonPressed(_ sender: UIButton) {
-        statusLabel.text = statusText
+        statusLabel?.text = statusText
     }
-
 }
