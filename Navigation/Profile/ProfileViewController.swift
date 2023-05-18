@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController {
     }
 
     func setTextField() {
-        textField = UITextField(frame: CGRect(x: 157, y: (2*16+200)-34-50, width: 200, height: 50))
+        textField = UITextField(frame: CGRect(x: 157, y: profileHeaderView.frame.origin.y+(2*16+100)-34-50, width: 200, height: 50))
         textField?.placeholder = "Waiting for something..."
         textField?.font = UIFont.systemFont(ofSize: 14)
         textField?.textColor = .gray
@@ -40,7 +40,7 @@ class ProfileViewController: UIViewController {
     }
 
     func setButton(){
-        let showStatusButton = UIButton(frame: CGRect(x: 16, y: (2*16+200), width: self.view.frame.width-32, height: 50))
+        let showStatusButton = UIButton(frame: CGRect(x: 16, y: profileHeaderView.frame.origin.y+(2*16+100), width: self.view.frame.width-32, height: 50))
         showStatusButton.backgroundColor = .systemBlue
         showStatusButton.layer.cornerRadius = 4
         showStatusButton.setTitle("Show status", for: .normal)
