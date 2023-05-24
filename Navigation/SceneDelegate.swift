@@ -19,12 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let userProfileFeedVC = FeedViewController(post: Post.init(title: "Post's title"))
         userProfileFeedVC.title = "userProfileFeed"
-        userProfileFeedVC.view.backgroundColor = .lightGray
+        userProfileFeedVC.view.backgroundColor = .purple
         let userProfileFeedNavController = UINavigationController(rootViewController: userProfileFeedVC)
 
         let userProfilePageVC = ProfileViewController()
         userProfilePageVC.title = "MyProfile"
-        userProfilePageVC.view.backgroundColor = .cyan
         let userProfilePageNavController = UINavigationController(rootViewController: userProfilePageVC)
 
         let tabBarController = UITabBarController()
@@ -43,7 +42,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.selectedIndex = 1
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-
         self.window = window
         
     }

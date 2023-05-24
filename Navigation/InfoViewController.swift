@@ -24,6 +24,11 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(alertButton)
 
+        setupConstraints()
+        alertButton.addTarget(self, action: #selector(alertButtonPressed(_:)), for: .touchUpInside)
+    }
+
+    func setupConstraints() {
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             alertButton.leadingAnchor.constraint(
@@ -40,11 +45,9 @@ class InfoViewController: UIViewController {
             ),
             alertButton.heightAnchor.constraint(equalToConstant: 44.0)
         ])
-
-        alertButton.addTarget(self, action: #selector(alertButtonPressed(_:)), for: .touchUpInside)
     }
 
-
+    
     @objc func alertButtonPressed (_ sender: UIButton) {
 
         let alert = UIAlertController(title: "Alert",
