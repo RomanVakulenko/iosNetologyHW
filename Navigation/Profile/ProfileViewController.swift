@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
 
     let profileHeaderView = ProfileHeaderView()
 
@@ -19,10 +19,21 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
         view.addSubview(profileHeaderView)
+        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        
     }
 
     override func viewWillLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        profileHeaderView.frame = view.safeAreaLayoutGuide.layoutFrame//к моменту отрисовки subview размеры superView будут корректны (потому тут, а не в ДидЛоад)
+        profileHeaderViewLayout()
+    }
+
+    private func profileHeaderViewLayout() {
+        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            profileHeaderView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            profileHeaderView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: 0),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220.0)
+        ])
     }
 }

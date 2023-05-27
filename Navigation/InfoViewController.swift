@@ -31,18 +31,9 @@ class InfoViewController: UIViewController {
     func setupConstraints() {
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            alertButton.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 140.0
-            ),
-            alertButton.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -140.0
-            ),
-            alertButton.centerYAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.centerYAnchor,
-                constant: -240.0
-            ),
+            alertButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,constant: 140.0),
+            alertButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,constant: -140.0),
+            alertButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor,constant: -240.0),
             alertButton.heightAnchor.constraint(equalToConstant: 44.0)
         ])
     }
@@ -50,18 +41,13 @@ class InfoViewController: UIViewController {
     
     @objc func alertButtonPressed (_ sender: UIButton) {
 
-        let alert = UIAlertController(title: "Alert",
-                                      message: "Training to create alert",
-                                      preferredStyle: .alert)
+        let alert = UIAlertController(title: "Alert", message: "Training to create alert", preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "Left",
-                                      style: .default,
-                                      handler: { _ in
+        alert.addAction(UIAlertAction(
+            title: "Left", style: .default, handler: { _ in
             print("Left alert button pressed")
             }))
-        alert.addAction(UIAlertAction(title: "Right",
-                                      style: .destructive,
-                                      handler: { _ in
+        alert.addAction(UIAlertAction(title: "Right", style: .destructive, handler: { _ in
             print("Right alert button pressed")
             }))
 

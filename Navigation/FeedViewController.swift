@@ -40,17 +40,9 @@ class FeedViewController: UIViewController {
     func setupConstraints() {
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            actionButton.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 80.0
-            ),
-            actionButton.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -80.0
-            ),
-            actionButton.centerYAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.centerYAnchor
-            ),
+            actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 80.0),
+            actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,constant: -80.0),
+            actionButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             actionButton.heightAnchor.constraint(equalToConstant: 44.0)
         ])
     }
