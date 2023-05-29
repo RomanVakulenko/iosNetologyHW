@@ -7,19 +7,44 @@
 
 import UIKit
 
-class FeedViewController: UIViewController {
+final class FeedViewController: UIViewController {
 
-    private lazy var actionButton: UIButton = {
+    private lazy var firstButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 6
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("step to post", for: .normal)
+        button.setTitle("Button 1", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         return button
     }()
 
+    private lazy var secondButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 6
+        button.setTitle("Button 2", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        return button
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let buttonsStackView = UIStackView()
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.clipsToBounds = true
+
+        buttonsStackView.axis = .vertical
+//        buttonsStackView.distribution = .fill //without the same, because it's default
+        buttonsStackView.alignment = .fill
+        buttonsStackView.spacing = 10
+
+        buttonsStackView.addArrangedSubview(firstButton)
+        buttonsStackView.addArrangedSubview(secondButton)
+
+        return buttonsStackView
+    }()
+
     let postObject: Post
+
     init(post: Post) {
         self.postObject = post
         super.init(nibName: nil, bundle: nil)
@@ -31,19 +56,19 @@ class FeedViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(actionButton)
-
+        view.addSubview(stackView)
         setupConstraints()
-        actionButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        firstButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        secondButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+
     }
 
     func setupConstraints() {
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 80.0),
-            actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,constant: -80.0),
-            actionButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 44.0)
+            stackView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            stackView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
         ])
     }
 
@@ -54,5 +79,4 @@ class FeedViewController: UIViewController {
 
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
-
 }
