@@ -13,6 +13,11 @@
 		AD79F4CF2A0556360035A66A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD79F4CD2A0556360035A66A /* LaunchScreen.storyboard */; };
 		AD7AAEBA2A07754D00058A30 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AAEB92A07754D00058A30 /* FeedViewController.swift */; };
 		AD7AAEBC2A07756000058A30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */; };
+		AD7CD86F2A2660EE003B8B81 /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7CD86E2A2660EE003B8B81 /* ColorSet.swift */; };
+		AD7CD8712A271D6C003B8B81 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7CD8702A271D6C003B8B81 /* LogInViewController.swift */; };
+		AD7CD8732A2744F5003B8B81 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7CD8722A2744F5003B8B81 /* CustomTableViewCell.swift */; };
+		AD7CD8752A2754FC003B8B81 /* CustomTableViewCell+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7CD8742A2754FC003B8B81 /* CustomTableViewCell+extension.swift */; };
+		AD7CD8772A276CCA003B8B81 /* LogInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7CD8762A276CCA003B8B81 /* LogInModel.swift */; };
 		ADBA8E572A0E53CE00D8060C /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */; };
 		ADBC2E712A0BACBE0005BE60 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBC2E702A0BACBE0005BE60 /* PostViewController.swift */; };
 		ADBC2E752A0BBE610005BE60 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBC2E742A0BBE610005BE60 /* InfoViewController.swift */; };
@@ -28,6 +33,11 @@
 		AD79F4D02A0556360035A66A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD7AAEB92A07754D00058A30 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		AD7CD86E2A2660EE003B8B81 /* ColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
+		AD7CD8702A271D6C003B8B81 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		AD7CD8722A2744F5003B8B81 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		AD7CD8742A2754FC003B8B81 /* CustomTableViewCell+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomTableViewCell+extension.swift"; sourceTree = "<group>"; };
+		AD7CD8762A276CCA003B8B81 /* LogInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInModel.swift; sourceTree = SOURCE_ROOT; };
 		ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		ADBC2E702A0BACBE0005BE60 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		ADBC2E742A0BBE610005BE60 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
@@ -81,8 +91,13 @@
 		ADBA8E552A0E538800D8060C /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				AD7CD8762A276CCA003B8B81 /* LogInModel.swift */,
 				ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */,
 				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
+				AD7CD86E2A2660EE003B8B81 /* ColorSet.swift */,
+				AD7CD8702A271D6C003B8B81 /* LogInViewController.swift */,
+				AD7CD8742A2754FC003B8B81 /* CustomTableViewCell+extension.swift */,
+				AD7CD8722A2744F5003B8B81 /* CustomTableViewCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -158,12 +173,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD79F4C32A0556350035A66A /* AppDelegate.swift in Sources */,
+				AD7CD8772A276CCA003B8B81 /* LogInModel.swift in Sources */,
 				ADBC2E712A0BACBE0005BE60 /* PostViewController.swift in Sources */,
+				AD7CD8732A2744F5003B8B81 /* CustomTableViewCell.swift in Sources */,
 				AD7AAEBC2A07756000058A30 /* ProfileViewController.swift in Sources */,
+				AD7CD8752A2754FC003B8B81 /* CustomTableViewCell+extension.swift in Sources */,
 				ADBC2E752A0BBE610005BE60 /* InfoViewController.swift in Sources */,
+				AD7CD86F2A2660EE003B8B81 /* ColorSet.swift in Sources */,
 				ADCE4C812A08E78500A4575E /* Post.swift in Sources */,
 				AD7AAEBA2A07754D00058A30 /* FeedViewController.swift in Sources */,
 				AD79F4C52A0556350035A66A /* SceneDelegate.swift in Sources */,
+				AD7CD8712A271D6C003B8B81 /* LogInViewController.swift in Sources */,
 				ADBA8E572A0E53CE00D8060C /* ProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

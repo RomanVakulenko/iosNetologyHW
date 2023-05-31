@@ -22,9 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         userProfileFeedVC.view.backgroundColor = .purple
         let userProfileFeedNavController = UINavigationController(rootViewController: userProfileFeedVC)
 
-        let userProfilePageVC = ProfileViewController()
-        userProfilePageVC.title = "MyProfile"
-        let userProfilePageNavController = UINavigationController(rootViewController: userProfilePageVC)
+        let logInViewController = LogInViewController()
+//        logInViewController.title = "MyProfile"
+        let userProfilePageNavController = UINavigationController(rootViewController: logInViewController)
 
         let tabBarController = UITabBarController()
 
