@@ -7,9 +7,17 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
 
     let profileHeaderView = ProfileHeaderView()
+
+    private lazy var bottomButton: UIButton = {
+        let tapButton = UIButton()
+        tapButton.setTitle("Кнопка", for: .normal)
+        tapButton.backgroundColor = .systemBlue
+        tapButton.translatesAutoresizingMaskIntoConstraints = false
+        return tapButton
+    }()
 
     required convenience init?(coder aDecoder: NSCoder) {
         self.init(coder: aDecoder)
@@ -19,10 +27,28 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
         view.addSubview(profileHeaderView)
+        view.addSubview(bottomButton)
+        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        
     }
 
     override func viewWillLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        profileHeaderView.frame = view.safeAreaLayoutGuide.layoutFrame//к моменту отрисовки subview размеры superView будут корректны (потому тут, а не в ДидЛоад)
+        layoutForProfileAndButton()
     }
+
+    private func layoutForProfileAndButton() {
+        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            profileHeaderView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            profileHeaderView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: 0),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220.0),
+
+            bottomButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
+            bottomButton.heightAnchor.constraint(equalToConstant: 50),
+            bottomButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+
+    
 }
