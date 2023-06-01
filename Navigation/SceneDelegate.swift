@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userProfileFeedNavController = UINavigationController(rootViewController: userProfileFeedVC)
 
         let logInViewController = LogInViewController()
-//        logInViewController.title = "MyProfile"
+        logInViewController.title = "MyProfile"
         let userProfilePageNavController = UINavigationController(rootViewController: logInViewController)
 
         let tabBarController = UITabBarController()

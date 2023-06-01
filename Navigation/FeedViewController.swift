@@ -33,7 +33,7 @@ final class FeedViewController: UIViewController {
         buttonsStackView.clipsToBounds = true
 
         buttonsStackView.axis = .vertical
-//        buttonsStackView.distribution = .fill //without the same, because it's default
+//        buttonsStackView.distribution = .fill //without  - the same, because it's default
         buttonsStackView.alignment = .fill
         buttonsStackView.spacing = 10
 
