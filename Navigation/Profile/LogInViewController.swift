@@ -46,7 +46,15 @@ final class LogInViewController: UIViewController {
         logInText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         logInText.tintColor = .lightGray
         logInText.autocapitalizationType = .none
+        logInText.addSubview(lineBetweenTextFields)
         return logInText
+    }()
+
+    private lazy var lineBetweenTextFields: UIView = {
+        let bottomLoginTextFieldLine = UIView()
+        bottomLoginTextFieldLine.translatesAutoresizingMaskIntoConstraints = false
+        bottomLoginTextFieldLine.backgroundColor = UIColor.lightGray
+        return bottomLoginTextFieldLine
     }()
 
     private lazy var passwordTextFieldView: UITextField = { [unowned self] in
@@ -79,8 +87,22 @@ final class LogInViewController: UIViewController {
 //        logInButton.backgroundColor = UIColor(hex: 0x4885CC)
         if let colorFromFile = UIImage(named: "blue_pixel") {
             logInButton.backgroundColor = UIColor(patternImage: colorFromFile)
+            switch logInButton.state {
+            case .normal:
+                logInButton.backgroundColor?.withAlphaComponent(1)
+            case .selected:
+                logInButton.backgroundColor?.withAlphaComponent(0.8)
+            case .highlighted:
+                logInButton.backgroundColor?.withAlphaComponent(0.8)
+            case .disabled:
+                logInButton.backgroundColor?.withAlphaComponent(0.8)
+            default:
+                break
+            }
         }
+        logInButton.titleLabel?.textColor = .white
         logInButton.layer.cornerRadius = 10
+        logInButton.layer.masksToBounds = true
         logInButton.setTitle("Log in", for: .normal)
         logInButton.addTarget(self, action: #selector(logInPressed(_:)), for: .touchUpInside)
         return logInButton
@@ -107,7 +129,6 @@ final class LogInViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        underline1stTextField()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -119,14 +140,6 @@ final class LogInViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardObservers()
-    }
-
-    private func underline1stTextField() {
-        let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: -textAlignment, y: logInTextFieldView.frame.height-1.0, width: logInTextFieldView.frame.width, height: 1.0)
-        bottomLine.backgroundColor = UIColor.lightGray.cgColor
-        logInTextFieldView.borderStyle = .none
-        logInTextFieldView.layer.addSublayer(bottomLine)
     }
 
     private func customizeStackView(){
@@ -175,6 +188,11 @@ final class LogInViewController: UIViewController {
             logInTextFieldView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             logInTextFieldView.topAnchor.constraint(equalTo: stackView.topAnchor),
             logInTextFieldView.heightAnchor.constraint(equalToConstant: 50),
+
+            lineBetweenTextFields.leadingAnchor.constraint(equalTo: logInTextFieldView.leadingAnchor, constant: -textAlignment),
+            lineBetweenTextFields.trailingAnchor.constraint(equalTo: logInTextFieldView.trailingAnchor),
+            lineBetweenTextFields.bottomAnchor.constraint(equalTo: logInTextFieldView.bottomAnchor),
+            lineBetweenTextFields.heightAnchor.constraint(equalToConstant: 0.5),
 
             passwordTextFieldView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             passwordTextFieldView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
