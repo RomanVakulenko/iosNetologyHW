@@ -20,6 +20,7 @@ final class LogInViewController: UIViewController {
     private lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.clipsToBounds = true
         return contentView
     }()
 
@@ -30,7 +31,7 @@ final class LogInViewController: UIViewController {
         return image
     }()
 
-    private let textAlignment: CGFloat = 12
+    private let textAlignment: CGFloat = 6
 
     private lazy var logInTextFieldView: UITextField = { [unowned self] in
         let logInText = UITextField()
@@ -45,7 +46,6 @@ final class LogInViewController: UIViewController {
         logInText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         logInText.tintColor = .lightGray
         logInText.autocapitalizationType = .none
-//        logInText.delegate = self
         return logInText
     }()
 
@@ -59,7 +59,6 @@ final class LogInViewController: UIViewController {
         passwordText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         passwordText.tintColor = .lightGray
         passwordText.autocapitalizationType = .none
-//        passwordText.delegate = self
         return passwordText
     }()
 
@@ -77,7 +76,10 @@ final class LogInViewController: UIViewController {
     private lazy var buttonView: UIButton = { [unowned self] in
         let logInButton = UIButton()
         logInButton.translatesAutoresizingMaskIntoConstraints = false
-        logInButton.backgroundColor = UIColor(hex: 0x4885CC)
+//        logInButton.backgroundColor = UIColor(hex: 0x4885CC)
+        if let colorFromFile = UIImage(named: "blue_pixel") {
+            logInButton.backgroundColor = UIColor(patternImage: colorFromFile)
+        }
         logInButton.layer.cornerRadius = 10
         logInButton.setTitle("Log in", for: .normal)
         logInButton.addTarget(self, action: #selector(logInPressed(_:)), for: .touchUpInside)
@@ -93,10 +95,18 @@ final class LogInViewController: UIViewController {
         setupScrollViewContent()
         logInTextFieldView.delegate = self
         passwordTextFieldView.delegate = self
-        scrollView.isScrollEnabled = false
+
+        scrollView.keyboardDismissMode = .onDrag
+
+        if #available(iOS 11.0, *) {
+            scrollView.contentInsetAdjustmentBehavior = .automatic
+        } else {
+            automaticallyAdjustsScrollViewInsets = false
+        }
     }
 
-    override func viewWillLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         underline1stTextField()
     }
 
@@ -105,7 +115,7 @@ final class LogInViewController: UIViewController {
         setupKeyboardObservers()
         navigationController?.navigationBar.isHidden = true
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardObservers()
@@ -175,7 +185,8 @@ final class LogInViewController: UIViewController {
             buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            buttonView.heightAnchor.constraint(equalToConstant: 50)
+            buttonView.heightAnchor.constraint(equalToConstant: 50),
+            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
@@ -191,8 +202,11 @@ final class LogInViewController: UIViewController {
     }
 
     @objc func willShowKeyboard(_ notification: NSNotification) {
-        let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
-        scrollView.contentInset.bottom += keyboardHeight ?? 0.0
+        guard let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height else { return }
+        if scrollView.contentInset.bottom < keyboardHeight {
+            scrollView.contentInset.bottom += keyboardHeight
+            scrollView.scrollRectToVisible(buttonView.frame, animated: true)
+        }
     }
 
     @objc func willHideKeyboard(_ notification: NSNotification) {
