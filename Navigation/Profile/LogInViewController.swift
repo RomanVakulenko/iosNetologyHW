@@ -193,7 +193,7 @@ final class LogInViewController: UIViewController {
 
             //constrains of content
             logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: contentView.topAnchor),
+//            logoView.topAnchor.constraint(equalTo: contentView.topAnchor),
             logoView.widthAnchor.constraint(equalToConstant: 100),
             logoView.heightAnchor.constraint(equalToConstant: 100),
 
@@ -208,7 +208,7 @@ final class LogInViewController: UIViewController {
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             buttonView.heightAnchor.constraint(equalToConstant: 50),
-            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+//            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             //constrains of stack
             logInTextFieldView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
@@ -226,8 +226,10 @@ final class LogInViewController: UIViewController {
             passwordTextFieldView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
             passwordTextFieldView.heightAnchor.constraint(equalToConstant: 50),
         ])
-//        contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        contentView.subviews.first?.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true //вместо тех, что внутри для первого - ЛОГО и для последнего - кнопка сабвьюх
+        contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
 
+        guard let superview = view.superview else { return }//для расчета высоты отступа от лого до стеквью в 1/4 от супервью
         landscapeLayout = ([
             //base constrains
             scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
@@ -248,7 +250,7 @@ final class LogInViewController: UIViewController {
             logoView.heightAnchor.constraint(equalToConstant: 100),
 
             stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 50),
+            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: superview.bounds.height/4.0),//было 50
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             stackView.heightAnchor.constraint(equalToConstant: 100),
@@ -275,6 +277,7 @@ final class LogInViewController: UIViewController {
             buttonView.heightAnchor.constraint(equalToConstant: 50),
             buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+        print("1/4 part of superview's height = \(superview.bounds.height/4.0)")// убрать
     }
 
     private func setupKeyboardObservers() {
