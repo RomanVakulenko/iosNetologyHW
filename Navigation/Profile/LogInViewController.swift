@@ -10,12 +10,6 @@ import UIKit
 final class LogInViewController: UIViewController {
 
     //MARK: - properties
-    private var isPortraitOrientation: Bool {
-        UIDevice.current.orientation == .portrait
-    }
-    private var portraitLayout = [NSLayoutConstraint]()
-    private var landscapeLayout = [NSLayoutConstraint]()
-
     private lazy var scrollView: UIScrollView = {
         let scrollview = UIScrollView()
         scrollview.showsVerticalScrollIndicator = false
@@ -91,7 +85,7 @@ final class LogInViewController: UIViewController {
     private lazy var buttonView: UIButton = { [unowned self] in
         let logInButton = UIButton()
         logInButton.translatesAutoresizingMaskIntoConstraints = false
-//        logInButton.backgroundColor = UIColor(hex: 0x4885CC)
+        //        logInButton.backgroundColor = UIColor(hex: 0x4885CC)
         if let colorFromFile = UIImage(named: "blue_pixel") {
             logInButton.backgroundColor = UIColor(patternImage: colorFromFile)
         }
@@ -100,6 +94,8 @@ final class LogInViewController: UIViewController {
         logInButton.layer.masksToBounds = true
         logInButton.setTitle("Log in", for: .normal)
         logInButton.addTarget(self, action: #selector(logInPressed(_:)), for: .touchUpInside)
+        logInButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        logInButton.addTarget(self, action: #selector(buttonUnhighlighted), for: .touchUpInside)
         return logInButton
     }()
 
@@ -121,15 +117,6 @@ final class LogInViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        isPortraitOrientation ? activatePortrait() : activateLandscape()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupKeyboardObservers()
@@ -141,27 +128,7 @@ final class LogInViewController: UIViewController {
         removeKeyboardObservers()
     }
 
-//MARK: - private
-    private func changeButtonAlpha(for button: UIButton) {
-        switch button.state {
-        case .selected, .highlighted, .disabled:
-            button.backgroundColor = button.backgroundColor?.withAlphaComponent(0.8)
-        case .normal:
-            button.backgroundColor = button.backgroundColor?.withAlphaComponent(1)
-        default:
-            break
-        }
-    }
-
-    private func activatePortrait() {
-        NSLayoutConstraint.activate(portraitLayout)
-        NSLayoutConstraint.deactivate(landscapeLayout)
-    }
-
-    private func activateLandscape() {
-        NSLayoutConstraint.activate(landscapeLayout)
-        NSLayoutConstraint.deactivate(portraitLayout)
-    }
+    //MARK: - private
 
     private func customizeStackView(){
         stackView.layer.borderColor = UIColor.lightGray.cgColor
@@ -178,7 +145,7 @@ final class LogInViewController: UIViewController {
 
     private func setupConstraints() {
         let safearea = view.safeAreaLayoutGuide
-        portraitLayout = ([
+        NSLayoutConstraint.activate([
             //base constrains
             scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: safearea.trailingAnchor),
@@ -193,7 +160,7 @@ final class LogInViewController: UIViewController {
 
             //constrains of content
             logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            logoView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            //            logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
             logoView.widthAnchor.constraint(equalToConstant: 100),
             logoView.heightAnchor.constraint(equalToConstant: 100),
 
@@ -208,7 +175,7 @@ final class LogInViewController: UIViewController {
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             buttonView.heightAnchor.constraint(equalToConstant: 50),
-//            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            //            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// есть ниже отдельный
 
             //constrains of stack
             logInTextFieldView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
@@ -228,56 +195,6 @@ final class LogInViewController: UIViewController {
         ])
         contentView.subviews.first?.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true //вместо тех, что внутри для первого - ЛОГО и для последнего - кнопка сабвьюх
         contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-
-        guard let superview = view.superview else { return }//для расчета высоты отступа от лого до стеквью в 1/4 от супервью
-        landscapeLayout = ([
-            //base constrains
-            scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: safearea.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: safearea.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safearea.bottomAnchor),
-
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
-            //constrains of content
-            logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            logoView.widthAnchor.constraint(equalToConstant: 100),
-            logoView.heightAnchor.constraint(equalToConstant: 100),
-
-            stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: superview.bounds.height/4.0),//было 50
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            stackView.heightAnchor.constraint(equalToConstant: 100),
-
-            logInTextFieldView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            logInTextFieldView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            logInTextFieldView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            logInTextFieldView.heightAnchor.constraint(equalToConstant: 50),
-
-            lineBetweenTextFields.leadingAnchor.constraint(equalTo: logInTextFieldView.leadingAnchor, constant: -textAlignment),
-            lineBetweenTextFields.trailingAnchor.constraint(equalTo: logInTextFieldView.trailingAnchor),
-            lineBetweenTextFields.bottomAnchor.constraint(equalTo: logInTextFieldView.bottomAnchor),
-            lineBetweenTextFields.heightAnchor.constraint(equalToConstant: 0.5),
-
-            passwordTextFieldView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            passwordTextFieldView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            passwordTextFieldView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            passwordTextFieldView.heightAnchor.constraint(equalToConstant: 50),
-
-            buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
-            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            buttonView.heightAnchor.constraint(equalToConstant: 50),
-            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        print("1/4 part of superview's height = \(superview.bounds.height/4.0)")// убрать
     }
 
     private func setupKeyboardObservers() {
@@ -303,14 +220,20 @@ final class LogInViewController: UIViewController {
         scrollView.contentInset.bottom = 0.0
     }
 
+    @objc func buttonHighlighted() {
+        buttonView.alpha = 0.8
+    }
+
+    @objc func buttonUnhighlighted() {
+        buttonView.alpha = 1.0
+    }
+
     @objc func logInPressed(_ sender: UIButton){
         let profileViewController = ProfileViewController()
-        changeButtonAlpha(for: buttonView)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [unowned self] in
-            self.navigationController?.pushViewController(profileViewController, animated: true)
-        }
+        self.navigationController?.pushViewController(profileViewController, animated: true)
     }
 }
+
 
 
 extension LogInViewController: UITextFieldDelegate {
