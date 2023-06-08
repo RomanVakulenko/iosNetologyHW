@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "vkLogo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "vkLogo.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

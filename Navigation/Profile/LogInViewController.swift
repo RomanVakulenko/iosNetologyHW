@@ -33,8 +33,6 @@ final class LogInViewController: UIViewController {
         return image
     }()
 
-    private let textAlignment: CGFloat = 6
-
     private lazy var logInTextFieldView: UITextField = { [unowned self] in
         let logInText = UITextField()
         logInText.translatesAutoresizingMaskIntoConstraints = false
@@ -44,10 +42,11 @@ final class LogInViewController: UIViewController {
         logInText.clearButtonMode = .whileEditing
         logInText.contentVerticalAlignment = .center
         logInText.placeholder = "  Email or phone"
-        logInText.layer.sublayerTransform = CATransform3DMakeTranslation(textAlignment, 0, 0)
         logInText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         logInText.tintColor = .lightGray
         logInText.autocapitalizationType = .none
+        logInText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: logInText.frame.height))
+        logInText.leftViewMode = .always
         logInText.heightAnchor.constraint(equalToConstant: 49.5).isActive = true
         return logInText
     }()
@@ -64,12 +63,13 @@ final class LogInViewController: UIViewController {
         let passwordText = UITextField()
         passwordText.translatesAutoresizingMaskIntoConstraints = false
         passwordText.placeholder = "  Password"
-        passwordText.layer.sublayerTransform = CATransform3DMakeTranslation(textAlignment, 0, 0)
         passwordText.textColor = .black
         passwordText.isSecureTextEntry = true
         passwordText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         passwordText.tintColor = .lightGray
         passwordText.autocapitalizationType = .none
+        passwordText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: passwordText.frame.height))
+        passwordText.leftViewMode = .always
         passwordText.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return passwordText
     }()
