@@ -50,7 +50,7 @@ final class ProfileHeaderView: UIView {
         return textField
     }()
 
-    lazy var setStatusButton: UIButton = {
+    lazy var setStatusButton: UIButton = { [unowned self] in
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue

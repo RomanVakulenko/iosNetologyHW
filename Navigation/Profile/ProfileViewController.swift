@@ -9,6 +9,19 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
+    var postsArray: [ProfilePosts] = []
+
+    private func createProfilePosts() {
+        for _ in 0...3 {
+            postsArray.append(ProfilePosts(author: "cat", description: "Bengal", image: "Bengal", likes: 3, views: 5))
+            postsArray.append(ProfilePosts(author: "dog", description: "For terrier", image: "FoxTerrier", likes: 2, views: 9))
+            postsArray.append(ProfilePosts(author: "mouse", description: "Jerry", image: "Jerry", likes: 1, views: 3))
+            postsArray.append(ProfilePosts(author: "cat2", description: "Tom", image: "Tom", likes: 5, views: 2))
+        }
+    }
+
+//Merge Pull request and after make new branch and do: ...вроде как ниже надо все удалить
+
     let profileHeaderView = ProfileHeaderView()
 
     private lazy var bottomButton: UIButton = {

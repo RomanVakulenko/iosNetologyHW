@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PostViewController: UIViewController {
+final class PostViewController: UIViewController {
 
-    override func viewDidLoad() {
+    override func viewDidLoad() { 
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "More info",
                                                                  style: .plain,
