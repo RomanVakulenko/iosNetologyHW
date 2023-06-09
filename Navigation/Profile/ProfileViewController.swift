@@ -9,59 +9,74 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
-    var postsArray: [ProfilePosts] = []
+    private let postModel = ProfilePosts.createProfilePosts()
 
-    private func createProfilePosts() {
-        for _ in 0...3 {
-            postsArray.append(ProfilePosts(author: "cat", description: "Bengal", image: "Bengal", likes: 3, views: 5))
-            postsArray.append(ProfilePosts(author: "dog", description: "For terrier", image: "FoxTerrier", likes: 2, views: 9))
-            postsArray.append(ProfilePosts(author: "mouse", description: "Jerry", image: "Jerry", likes: 1, views: 3))
-            postsArray.append(ProfilePosts(author: "cat2", description: "Tom", image: "Tom", likes: 5, views: 2))
-        }
-    }
-
-//Merge Pull request and after make new branch and do: ...вроде как ниже надо все удалить
-
-    let profileHeaderView = ProfileHeaderView()
-
-    private lazy var bottomButton: UIButton = {
-        let tapButton = UIButton()
-        tapButton.setTitle("Кнопка", for: .normal)
-        tapButton.backgroundColor = .systemBlue
-        tapButton.translatesAutoresizingMaskIntoConstraints = false
-        return tapButton
+    private lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
+        table.dataSource = self
+        table.delegate = self
+        return table
     }()
 
-    required convenience init?(coder aDecoder: NSCoder) {
-        self.init(coder: aDecoder)
-    }
-
+    //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
-        view.addSubview(profileHeaderView)
-        view.addSubview(bottomButton)
-        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.addSubview(tableView)
     }
 
     override func viewWillLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        layoutForProfileAndButton()
+        super.viewWillLayoutSubviews()
+        layout()
     }
 
-    private func layoutForProfileAndButton() {
-        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            profileHeaderView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            profileHeaderView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: 0),
-            profileHeaderView.heightAnchor.constraint(equalToConstant: 220.0),
+    //MARK: - private methods
 
-            bottomButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
-            bottomButton.heightAnchor.constraint(equalToConstant: 50),
-            bottomButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+    private func layout() {
+        
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
-    
 }
+
+
+extension ProfileViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        postModel.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        postModel.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as? ProfileTableViewCell else {return UITableViewCell()}
+        cell.setupCell(model: postModel[indexPath.row])
+
+        return cell
+    }
+}
+
+extension ProfileViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = ProfileHeaderView()
+        header.backgroundColor = .systemGray5
+        if section == 0 {
+            return header
+        } else {
+            return nil
+        }
+    }
+} 
+
+//Ранее созданный массив с публикациями используйте в качестве источника данных для таблицы.
+//Используйте ProfileTableHederView в качестве HeaderForSection для нулевой секции.
+//Создайте файл PostTableViewCell.swift и добавьте в него класс UITableViewCell с именем PostTableViewCell.
+//Реализуйте верстку в только что созданном классе согласно макету Lesson_6_Layout_3. Используйте Auto Layout.
+//Используйте созданную ячейку для отображения контента публикации.

@@ -137,7 +137,7 @@ final class LogInViewController: UIViewController {
         removeKeyboardObservers()
     }
 
-    //MARK: - private
+    //MARK: - private methods
 
     private func addSubviews(){
         view.addSubview(scrollView)
