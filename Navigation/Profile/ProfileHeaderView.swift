@@ -26,7 +26,7 @@ final class ProfileHeaderView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 18.0)
         label.textColor = .black
-        label.text = "Colors in iOS"
+        label.text = "Simba - the cat"
         return label
     }()
 
@@ -42,7 +42,9 @@ final class ProfileHeaderView: UIView {
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "  Type new status"
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.placeholder = "Type new status"
         textField.font = UIFont.systemFont(ofSize: 15)
         textField.textColor = UIColor.black
         textField.backgroundColor = UIColor.white
@@ -55,7 +57,7 @@ final class ProfileHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 10
         button.setTitle("Tap to set the new status", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         (button.layer.shadowOffset.width, button.layer.shadowOffset.height, button.layer.shadowRadius) = (4, 4, 4)
@@ -81,6 +83,7 @@ final class ProfileHeaderView: UIView {
 
     @objc func buttonPressed(_ sender: UIButton) {
         statusLabel.text = textField.text
+        textField.resignFirstResponder() //правильно ли я сделал скрытие клавиатуры при нажатии на кнопку? а как надо было бы сделать, чтобы при нажатии на return клава скрывалась бы?
     }
 
     private func setUpConstraints(){

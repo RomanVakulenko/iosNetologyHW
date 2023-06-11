@@ -29,7 +29,7 @@ class ProfileTableViewCell: UITableViewCell {
         postImage.translatesAutoresizingMaskIntoConstraints = false
         postImage.contentMode = .scaleAspectFit
         postImage.clipsToBounds = true
-        postImage.backgroundColor = .cyan
+        postImage.backgroundColor = .black
         return postImage
     }()
 
@@ -82,16 +82,16 @@ class ProfileTableViewCell: UITableViewCell {
 
     func setupCell(model: ProfilePosts) {
         labelView.text = model.author
-        imageViewForPost.image = model.image
+        imageViewForPost.image = UIImage(named: model.image)
         descriptionLabelView.text = model.description
-        likesLabelView.text = model.likes.description
-        viewsLabelView.text = model.views.description
+        likesLabelView.text = "Likes: " + model.likes.description
+        viewsLabelView.text = "Views: " + model.views.description
     }
 
     //MARK: - layout
     private func layout() {
-        [postContentView, labelView, imageViewForPost, descriptionLabelView, likesLabelView, viewsLabelView].forEach { contentView.addSubview($0) }
-        contentView.backgroundColor = .systemCyan
+        [labelView, imageViewForPost, descriptionLabelView, likesLabelView, viewsLabelView].forEach { postContentView.addSubview($0) }
+        contentView.addSubview(postContentView)
         let inset: CGFloat = 16
         NSLayoutConstraint.activate([
             postContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -104,7 +104,8 @@ class ProfileTableViewCell: UITableViewCell {
             labelView.widthAnchor.constraint(equalTo: postContentView.widthAnchor, constant: -32),
 
             imageViewForPost.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
-            imageViewForPost.widthAnchor.constraint(equalToConstant: contentView.frame.width),
+            imageViewForPost.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
+            imageViewForPost.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor),
             imageViewForPost.heightAnchor.constraint(equalToConstant: contentView.frame.width),
 
             descriptionLabelView.topAnchor.constraint(equalTo: imageViewForPost.bottomAnchor, constant: inset),
@@ -117,7 +118,8 @@ class ProfileTableViewCell: UITableViewCell {
 
             viewsLabelView.topAnchor.constraint(equalTo: descriptionLabelView.bottomAnchor, constant: inset),
             viewsLabelView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -inset),
-            viewsLabelView.widthAnchor.constraint(equalToConstant: contentView.frame.width/2)
+            viewsLabelView.widthAnchor.constraint(equalToConstant: contentView.frame.width/2),
+            viewsLabelView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -inset)
         ])
     }
 }

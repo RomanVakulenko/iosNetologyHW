@@ -17,6 +17,10 @@ final class ProfileViewController: UIViewController {
         table.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         table.dataSource = self
         table.delegate = self
+//        table.estimatedSectionHeaderHeight = 0 //отключить предварительную оценку высоты заголовков секций, чтобы улучшить производительность таблицы.
+//        table.sectionHeaderHeight = UITableView.automaticDimension
+//        table.contentInsetAdjustmentBehavior = .never
+//        table.contentInset = UIEdgeInsets(top: -22, left: 0, bottom: 0, right: 0);
         return table
     }()
 
@@ -24,6 +28,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
+//        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
     }
 
     override func viewWillLayoutSubviews() {
@@ -47,7 +52,7 @@ final class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        postModel.count
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -67,16 +72,6 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = ProfileHeaderView()
         header.backgroundColor = .systemGray5
-        if section == 0 {
-            return header
-        } else {
-            return nil
-        }
+        return header
     }
 } 
-
-//Ранее созданный массив с публикациями используйте в качестве источника данных для таблицы.
-//Используйте ProfileTableHederView в качестве HeaderForSection для нулевой секции.
-//Создайте файл PostTableViewCell.swift и добавьте в него класс UITableViewCell с именем PostTableViewCell.
-//Реализуйте верстку в только что созданном классе согласно макету Lesson_6_Layout_3. Используйте Auto Layout.
-//Используйте созданную ячейку для отображения контента публикации.

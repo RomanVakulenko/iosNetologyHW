@@ -9,7 +9,7 @@ import UIKit
 
 struct ProfilePosts {
     let author: String
-    let image: UIImage
+    let image: String
     let description: String
     let likes: Int
     let views: Int
@@ -17,15 +17,26 @@ struct ProfilePosts {
     static func createProfilePosts() -> [ProfilePosts]{
         var model = [ProfilePosts]()
 
-        let section1 = ProfilePosts(author: "Simba", image: UIImage(named: "Bengal")!, description: "Bengal", likes: 3, views: 5)
-        let section2 = ProfilePosts(author: "Persi", image: UIImage(named: "FoxTerrier")!, description: "For terrier", likes: 2, views: 9)
-        let section3 = ProfilePosts(author: "Mouse", image: UIImage(named: "Jerry")!, description: "Jerry", likes: 1, views: 3)
-        let section4 = ProfilePosts(author: "Tom", image: UIImage(named: "Tom")!, description: "Tom", likes: 5, views: 2)
+        let post1st = ProfilePosts(author: "Simba", image: "Bengal",
+                                    description: "Это одна из самых молодых пород на планете, полученная путём селекции диких бенгальских кошек с домашними котами. В результате, получился довольно удачный гибрид, в котором органично сочетаются охотничьи повадки и игривый характер. Несмотря на то, что предками бенгалов были хищники, представители этой породы хорошо контактируют с людьми и другими домашними животными, поддаются дрессировке.",
+                                    likes: 3, views: 5)
 
-        model.append(section1)
-        model.append(section2)
-        model.append(section3)
-        model.append(section4)
+        let post2nd = ProfilePosts(author: "Persi", image: "FoxTerrier",
+                                    description: "Собаки породы фокстерьер обладают достаточно большой физической силой, бесстрашием и даже безрассудством. Эти собаки способны атаковать зверя, ростом и весом намного превышающего их собственный рост и вес.",
+                                    likes: 2, views: 9)
+
+        let post3rd = ProfilePosts(author: "Mouse", image: "Jerry",
+                                    description: "Второй главный герой мультфильма «Том и Джерри». Является основной целью в различного рода погонях и схватках для кота Тома, и старается постоянно устроить Тому какую-нибудь пакость.",
+                                    likes: 1, views: 3)
+
+        let post4th = ProfilePosts(author: "Tom", image: "Tom",
+                                    description: "Кот серо-голубого окраса, первый главный герой мультсериала «Том и Джерри», гоняющийся за мышонком Джерри.",
+                                    likes: 5, views: 2)
+
+        model.append(post1st)
+        model.append(post2nd)
+        model.append(post3rd)
+        model.append(post4th)
 
         return model
     }
