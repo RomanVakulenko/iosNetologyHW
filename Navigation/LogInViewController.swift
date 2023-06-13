@@ -129,12 +129,27 @@ final class LogInViewController: UIViewController {
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        changeConstraints()
+//        changeConstraints()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardObservers()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if UITraitCollection.current.verticalSizeClass == .regular {
+            NSLayoutConstraint.deactivate(landscapeConstraints)
+            NSLayoutConstraint.activate(portraitConstraints)
+
+        } else if UITraitCollection.current.verticalSizeClass == .compact {
+            NSLayoutConstraint.deactivate(portraitConstraints)
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
+//        self.view.layoutIfNeeded()
+        self.view.setNeedsLayout()
     }
 
     //MARK: - private methods
@@ -218,12 +233,14 @@ final class LogInViewController: UIViewController {
         NSLayoutConstraint.activate(landscapeConstraints)
     }
 
-    private func changeConstraints() {
 
-        let isPortrait = view.frame.size.height > view.frame.size.width
-        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
-        isPortrait ? usePortraitConstraints() : useLandscapeConstraints()
-    }
+
+//    private func changeConstraints() {
+//
+//        let isPortrait = view.frame.size.height > view.frame.size.width
+//        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
+//        isPortrait ? usePortraitConstraints() : useLandscapeConstraints()
+//    }
 //
 //    private func changeConstraints() {
 //        if UIDevice.current.orientation.isPortrait {
