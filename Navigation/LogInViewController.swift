@@ -106,16 +106,81 @@ final class LogInViewController: UIViewController {
         return logInButton
     }()
 
-    private var portraitConstraints = [NSLayoutConstraint]()
+    private lazy var portraitConstraints: [NSLayoutConstraint] = {
+        [//base constrains
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-    private var landscapeConstraints: [NSLayoutConstraint] = []
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 120),
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+        //constrains of content
+        logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
+        logoView.widthAnchor.constraint(equalToConstant: 100),
+        logoView.heightAnchor.constraint(equalToConstant: 100),
+
+        stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+        stackView.heightAnchor.constraint(equalToConstant: 100),
+
+        buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+        buttonView.heightAnchor.constraint(equalToConstant: 50),
+        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements'
+        ]
+    }()
+
+    private lazy var landscapeConstraints: [NSLayoutConstraint] = {
+        [//base constrains
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+        //constrains of content
+        logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
+        logoView.widthAnchor.constraint(equalToConstant: 100),
+        logoView.heightAnchor.constraint(equalToConstant: 100),
+
+        stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 50),
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+        stackView.heightAnchor.constraint(equalToConstant: 100),
+
+        buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+        buttonView.heightAnchor.constraint(equalToConstant: 50),
+        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements' initialization
+        ]
+    }()
 
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
-        usePortraitConstraints()
 
         logInTextFieldView.delegate = self
         passwordTextFieldView.delegate = self
@@ -130,6 +195,7 @@ final class LogInViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 //        changeConstraints()
+        traitCollection.verticalSizeClass == .regular ? usePortraitConstraints() : useLandscapeConstraints()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -137,21 +203,17 @@ final class LogInViewController: UIViewController {
         removeKeyboardObservers()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) { //apple рекомендует
         super.traitCollectionDidChange(previousTraitCollection)
-
         if UITraitCollection.current.verticalSizeClass == .regular {
             NSLayoutConstraint.deactivate(landscapeConstraints)
             NSLayoutConstraint.activate(portraitConstraints)
-
         } else if UITraitCollection.current.verticalSizeClass == .compact {
             NSLayoutConstraint.deactivate(portraitConstraints)
             NSLayoutConstraint.activate(landscapeConstraints)
         }
-//        self.view.layoutIfNeeded()
-        self.view.setNeedsLayout()
+//        view.setNeedsLayout() //не обязателен, перерисовка произойдет автоматически после изменения ограничений. Может быть полезен, если хотим отложить перерисовку до более подходящего момента, тогда надо вызвать метод setNeedsLayout() в другом месте кода, когда это будет нужно
     }
-
     //MARK: - private methods
 
     private func addSubviews(){
@@ -161,96 +223,26 @@ final class LogInViewController: UIViewController {
     }
 
     private func usePortraitConstraints() {
-        let safearea = view.safeAreaLayoutGuide
-        portraitConstraints = [//base constrains
-            scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: safearea.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: safearea.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safearea.bottomAnchor),
-
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 120),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
-            //constrains of content
-            logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
-            logoView.widthAnchor.constraint(equalToConstant: 100),
-            logoView.heightAnchor.constraint(equalToConstant: 100),
-
-            stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            stackView.heightAnchor.constraint(equalToConstant: 100),
-
-            buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
-            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            buttonView.heightAnchor.constraint(equalToConstant: 50),
-            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-            //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements'
-            ]
         NSLayoutConstraint.activate(portraitConstraints)
     }
     private func useLandscapeConstraints() {
-        let safearea = view.safeAreaLayoutGuide
-        landscapeConstraints = [//base constrains
-            scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: safearea.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: safearea.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safearea.bottomAnchor),
-
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
-            //constrains of content
-            logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
-            logoView.widthAnchor.constraint(equalToConstant: 100),
-            logoView.heightAnchor.constraint(equalToConstant: 100),
-
-            stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 50),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            stackView.heightAnchor.constraint(equalToConstant: 100),
-
-            buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
-            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            buttonView.heightAnchor.constraint(equalToConstant: 50),
-            buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-            //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements' initialization
-        ]
         NSLayoutConstraint.activate(landscapeConstraints)
     }
 
-
-
-//    private func changeConstraints() {
-//
+//    private func changeConstraints() { //рабочий код
 //        let isPortrait = view.frame.size.height > view.frame.size.width
 //        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
 //        isPortrait ? usePortraitConstraints() : useLandscapeConstraints()
 //    }
-//
-//    private func changeConstraints() {
-//        if UIDevice.current.orientation.isPortrait {
-//            NSLayoutConstraint.deactivate(landscapeConstraints)
-//            usePortraitConstraints()
-//        } else if UIDevice.current.orientation.isLandscape {
-////            NSLayoutConstraint.deactivate(portraitConstraints)
-//            useLandscapeConstraints()
-//        }
-//    }
+    private func changeConstraints() { //рабочий код
+        if UIDevice.current.orientation.isPortrait {
+            NSLayoutConstraint.deactivate(landscapeConstraints)
+            usePortraitConstraints()
+        } else if UIDevice.current.orientation.isLandscape {
+            NSLayoutConstraint.deactivate(portraitConstraints)
+            useLandscapeConstraints()
+        }
+    }
 
     private func setupKeyboardObservers() {
         let notificationCenter = NotificationCenter.default
