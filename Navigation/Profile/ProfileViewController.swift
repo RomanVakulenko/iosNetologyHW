@@ -12,15 +12,11 @@ final class ProfileViewController: UIViewController {
     private let postModel = ProfilePosts.createProfilePosts()
 
     private lazy var tableView: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         table.dataSource = self
         table.delegate = self
-//        table.estimatedSectionHeaderHeight = 0 //отключить предварительную оценку высоты заголовков секций, чтобы улучшить производительность таблицы.
-//        table.sectionHeaderHeight = UITableView.automaticDimension
-//        table.contentInsetAdjustmentBehavior = .never
-//        table.contentInset = UIEdgeInsets(top: -22, left: 0, bottom: 0, right: 0);
         return table
     }()
 
@@ -28,11 +24,11 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
-//        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        view.backgroundColor = #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
         layout()
     }
 
@@ -62,7 +58,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as? ProfileTableViewCell else {return UITableViewCell()}
         cell.setupCell(model: postModel[indexPath.row])
-
+        cell.selectionStyle = .none
         return cell
     }
 }
@@ -71,7 +67,7 @@ extension ProfileViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = ProfileHeaderView()
-        header.backgroundColor = .systemGray5
+        header.backgroundColor = #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
         return header
     }
 } 

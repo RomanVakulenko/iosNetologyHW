@@ -115,7 +115,7 @@ final class LogInViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
-        createConstraints()
+        usePortraitConstraints()
 
         logInTextFieldView.delegate = self
         passwordTextFieldView.delegate = self
@@ -145,7 +145,7 @@ final class LogInViewController: UIViewController {
         [logoView, stackView, buttonView].forEach { contentView.addSubview($0) }
     }
 
-    private func createConstraints() {
+    private func usePortraitConstraints() {
         let safearea = view.safeAreaLayoutGuide
         portraitConstraints = [//base constrains
             scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
@@ -177,9 +177,12 @@ final class LogInViewController: UIViewController {
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             buttonView.heightAnchor.constraint(equalToConstant: 50),
             buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-            //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements' initialization
-        ]
-
+            //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements'
+            ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+    private func useLandscapeConstraints() {
+        let safearea = view.safeAreaLayoutGuide
         landscapeConstraints = [//base constrains
             scrollView.leadingAnchor.constraint(equalTo: safearea.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: safearea.trailingAnchor),
@@ -212,15 +215,17 @@ final class LogInViewController: UIViewController {
             buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
             //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements' initialization
         ]
+        NSLayoutConstraint.activate(landscapeConstraints)
     }
 
     private func changeConstraints() {
         if UIDevice.current.orientation.isPortrait {
             NSLayoutConstraint.deactivate(landscapeConstraints)
-            NSLayoutConstraint.activate(portraitConstraints)
-        } else {
-            NSLayoutConstraint.deactivate(portraitConstraints)
-            NSLayoutConstraint.activate(landscapeConstraints)}
+            usePortraitConstraints()
+        } else if UIDevice.current.orientation.isLandscape {
+//            NSLayoutConstraint.deactivate(portraitConstraints)
+            useLandscapeConstraints()
+        }
     }
 
     private func setupKeyboardObservers() {

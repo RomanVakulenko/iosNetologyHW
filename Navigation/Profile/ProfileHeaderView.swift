@@ -50,6 +50,7 @@ final class ProfileHeaderView: UIView {
         textField.backgroundColor = UIColor.white
         (textField.layer.borderWidth, textField.layer.borderColor) = (1, UIColor.black.cgColor)
         textField.layer.cornerRadius = 12
+        textField.delegate = self
         return textField
     }()
 
@@ -83,7 +84,7 @@ final class ProfileHeaderView: UIView {
 
     @objc func buttonPressed(_ sender: UIButton) {
         statusLabel.text = textField.text
-        textField.resignFirstResponder() //правильно ли я сделал скрытие клавиатуры при нажатии на кнопку? а как надо было бы сделать, чтобы при нажатии на return клава скрывалась бы?
+        textField.resignFirstResponder() //скрывает клаву по нажатию кнопки
     }
 
     private func setUpConstraints(){
@@ -114,5 +115,13 @@ final class ProfileHeaderView: UIView {
             setStatusButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
             setStatusButton.heightAnchor.constraint(equalToConstant: 50),
         ])
+    }
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        statusLabel.text = textField.text
+        textField.resignFirstResponder() //скрывает клаву по нажатию return
+        return true
     }
 }
