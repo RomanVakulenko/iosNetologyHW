@@ -23,7 +23,6 @@ final class LogInViewController: UIViewController {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.clipsToBounds = true
-        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         return contentView
     }()
 
@@ -130,26 +129,15 @@ final class LogInViewController: UIViewController {
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setupNotifications()
+        changeConstraints()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardObservers()
     }
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        setupNotifications()
-//    } //не помогло
-
-    func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onOrientationCChange), name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
 
     //MARK: - private methods
-    @objc func onOrientationCChange(){
-        changeConstraints()
-    }
 
     private func addSubviews(){
         view.addSubview(scrollView)
@@ -231,14 +219,21 @@ final class LogInViewController: UIViewController {
     }
 
     private func changeConstraints() {
-        if UIDevice.current.orientation.isPortrait {
-            NSLayoutConstraint.deactivate(landscapeConstraints)
-            usePortraitConstraints()
-        } else if UIDevice.current.orientation.isLandscape {
-//            NSLayoutConstraint.deactivate(portraitConstraints)
-            useLandscapeConstraints()
-        }
+
+        let isPortrait = view.frame.size.height > view.frame.size.width
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
+        isPortrait ? usePortraitConstraints() : useLandscapeConstraints()
     }
+//
+//    private func changeConstraints() {
+//        if UIDevice.current.orientation.isPortrait {
+//            NSLayoutConstraint.deactivate(landscapeConstraints)
+//            usePortraitConstraints()
+//        } else if UIDevice.current.orientation.isLandscape {
+////            NSLayoutConstraint.deactivate(portraitConstraints)
+//            useLandscapeConstraints()
+//        }
+//    }
 
     private func setupKeyboardObservers() {
         let notificationCenter = NotificationCenter.default
