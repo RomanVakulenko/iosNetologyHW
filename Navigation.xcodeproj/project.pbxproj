@@ -21,6 +21,10 @@
 		ADBA8E572A0E53CE00D8060C /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */; };
 		ADBC2E712A0BACBE0005BE60 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBC2E702A0BACBE0005BE60 /* PostViewController.swift */; };
 		ADBC2E752A0BBE610005BE60 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBC2E742A0BBE610005BE60 /* InfoViewController.swift */; };
+		ADBE20922A3B0656002C59C5 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE20912A3B0656002C59C5 /* PhotosTableViewCell.swift */; };
+		ADBE20942A3B160D002C59C5 /* GalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE20932A3B160D002C59C5 /* GalleryCollectionViewController.swift */; };
+		ADBE20972A3B1885002C59C5 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE20962A3B1885002C59C5 /* GalleryCollectionViewCell.swift */; };
+		ADBE20992A3B1B0A002C59C5 /* GalleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE20982A3B1B0A002C59C5 /* GalleryModel.swift */; };
 		ADCE4C812A08E78500A4575E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE4C802A08E78500A4575E /* Post.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +45,10 @@
 		ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		ADBC2E702A0BACBE0005BE60 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		ADBC2E742A0BBE610005BE60 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		ADBE20912A3B0656002C59C5 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
+		ADBE20932A3B160D002C59C5 /* GalleryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewController.swift; sourceTree = "<group>"; };
+		ADBE20962A3B1885002C59C5 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
+		ADBE20982A3B1B0A002C59C5 /* GalleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryModel.swift; sourceTree = "<group>"; };
 		ADCE4C802A08E78500A4575E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,12 +102,24 @@
 		ADBA8E552A0E538800D8060C /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */,
-				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
-				ADA8958F2A322CBB0093223E /* ProfileTableViewCell.swift */,
 				ADA8958D2A30DD100093223E /* ProfilePosts.swift */,
+				ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */,
+				ADBE20912A3B0656002C59C5 /* PhotosTableViewCell.swift */,
+				ADA8958F2A322CBB0093223E /* ProfileTableViewCell.swift */,
+				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
+				ADBE20952A3B1646002C59C5 /* PhotosCollection */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		ADBE20952A3B1646002C59C5 /* PhotosCollection */ = {
+			isa = PBXGroup;
+			children = (
+				ADBE20932A3B160D002C59C5 /* GalleryCollectionViewController.swift */,
+				ADBE20962A3B1885002C59C5 /* GalleryCollectionViewCell.swift */,
+				ADBE20982A3B1B0A002C59C5 /* GalleryModel.swift */,
+			);
+			path = PhotosCollection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,13 +193,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD79F4C32A0556350035A66A /* AppDelegate.swift in Sources */,
+				ADBE20972A3B1885002C59C5 /* GalleryCollectionViewCell.swift in Sources */,
 				ADBC2E712A0BACBE0005BE60 /* PostViewController.swift in Sources */,
 				AD7AAEBC2A07756000058A30 /* ProfileViewController.swift in Sources */,
+				ADBE20942A3B160D002C59C5 /* GalleryCollectionViewController.swift in Sources */,
 				ADBC2E752A0BBE610005BE60 /* InfoViewController.swift in Sources */,
 				ADA895942A3259000093223E /* UIView+extension.swift in Sources */,
 				AD7CD86F2A2660EE003B8B81 /* ColorSet.swift in Sources */,
 				ADCE4C812A08E78500A4575E /* Post.swift in Sources */,
 				AD7AAEBA2A07754D00058A30 /* FeedViewController.swift in Sources */,
+				ADBE20922A3B0656002C59C5 /* PhotosTableViewCell.swift in Sources */,
+				ADBE20992A3B1B0A002C59C5 /* GalleryModel.swift in Sources */,
 				AD79F4C52A0556350035A66A /* SceneDelegate.swift in Sources */,
 				AD7CD8712A271D6C003B8B81 /* LogInViewController.swift in Sources */,
 				ADA895902A322CBB0093223E /* ProfileTableViewCell.swift in Sources */,
