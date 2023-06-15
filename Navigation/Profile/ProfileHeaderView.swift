@@ -11,25 +11,26 @@ final class ProfileHeaderView: UIView {
 
     private let avatarHeight: CGFloat = 100
 
-    lazy var avatarView: UIView = {
-        let imageView = UIImageView(image: UIImage(named: "Colors"))
+    private lazy var avatarView: UIView = {
+        let imageView = UIImageView(image: UIImage(named: "Simba"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = avatarHeight/2
         imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         (imageView.layer.borderWidth, imageView.layer.borderColor) = (3, UIColor.white.cgColor)
         return imageView
     }()
 
-    lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 18.0)
         label.textColor = .black
-        label.text = "Colors in iOS"
+        label.text = "Simba - the cat"
         return label
     }()
 
-    lazy var statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let status = UILabel()
         status.translatesAutoresizingMaskIntoConstraints = false
         status.text = "Waiting for something..."
@@ -38,23 +39,26 @@ final class ProfileHeaderView: UIView {
         return status
     }()
 
-    lazy var textField: UITextField = {
+    private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "  Type new status"
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.placeholder = "Type new status"
         textField.font = UIFont.systemFont(ofSize: 15)
         textField.textColor = UIColor.black
         textField.backgroundColor = UIColor.white
         (textField.layer.borderWidth, textField.layer.borderColor) = (1, UIColor.black.cgColor)
         textField.layer.cornerRadius = 12
+        textField.delegate = self
         return textField
     }()
 
-    lazy var setStatusButton: UIButton = { [unowned self] in
+    private lazy var setStatusButton: UIButton = { [unowned self] in
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 10
         button.setTitle("Tap to set the new status", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         (button.layer.shadowOffset.width, button.layer.shadowOffset.height, button.layer.shadowRadius) = (4, 4, 4)
@@ -80,6 +84,7 @@ final class ProfileHeaderView: UIView {
 
     @objc func buttonPressed(_ sender: UIButton) {
         statusLabel.text = textField.text
+        textField.resignFirstResponder() //скрывает клаву по нажатию кнопки
     }
 
     private func setUpConstraints(){
@@ -88,7 +93,7 @@ final class ProfileHeaderView: UIView {
             avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             avatarView.widthAnchor.constraint(equalToConstant: avatarHeight),
             avatarView.heightAnchor.constraint(equalToConstant: avatarHeight),
-
+            
             nameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -50),
             nameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 18),
             nameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -106,8 +111,17 @@ final class ProfileHeaderView: UIView {
 
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            setStatusButton.heightAnchor.constraint(equalToConstant: 50),
+            setStatusButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 16),
             setStatusButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            setStatusButton.heightAnchor.constraint(equalToConstant: 50),
         ])
+    }
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        statusLabel.text = textField.text
+        textField.resignFirstResponder() //скрывает клаву по нажатию return
+        return true
     }
 }

@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "FoxTerrier.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "dog1.jpeg",
       "idiom" : "universal",
       "scale" : "2x"
     },
