@@ -46,7 +46,6 @@ final class ProfileViewController: UIViewController {
     }
 }
 
-
 // MARK: - UITableViewDataSource
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -68,7 +67,7 @@ extension ProfileViewController: UITableViewDataSource {
         case 0:
             let photosCell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
 
-            photosCell.setupPhotoForTableCell(model: gallery[indexPath.row], indexPath: indexPath)
+            photosCell.setupPhotoForTableCell(model: gallery[indexPath.row])
             photosCell.selectionStyle = .default
             return photosCell
 

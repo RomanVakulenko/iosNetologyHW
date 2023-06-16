@@ -13,6 +13,7 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         let photo = UIImageView()
         photo.translatesAutoresizingMaskIntoConstraints = false
         photo.contentMode = .scaleAspectFit
+        photo.clipsToBounds = true
         return photo
     }()
 

@@ -12,10 +12,10 @@ struct GalleryModel {
 
     static func createMockModel() -> [GalleryModel] {
         var imageArr = [GalleryModel]()
-        var image = GalleryModel(photo: "")
+
 
         for i in 1...20 {
-            image.photo = String(i)
+            let image = GalleryModel(photo: String(i))
             imageArr.append(image)
         }
         return imageArr

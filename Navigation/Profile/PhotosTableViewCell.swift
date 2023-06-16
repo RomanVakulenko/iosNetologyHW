@@ -11,7 +11,7 @@ class PhotosTableViewCell: UITableViewCell {
 
     private let gallery = GalleryModel.createMockModel()
 
-    private lazy var photosContentView: UIView = {
+    private lazy var imageContentView: UIView = {
         let photosContentView = UIView()
         photosContentView.translatesAutoresizingMaskIntoConstraints = false
         return photosContentView
@@ -34,16 +34,25 @@ class PhotosTableViewCell: UITableViewCell {
 
     private lazy var imageCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
 
         let imageCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         imageCollection.translatesAutoresizingMaskIntoConstraints = false
-        imageCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
+        imageCollection.showsHorizontalScrollIndicator = false
+        imageCollection.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.identifier)
         imageCollection.dataSource = self
         imageCollection.delegate = self
         imageCollection.reloadData()
         return imageCollection
     }()
+
+//    private lazy var photoView: UIImageView = {
+//        let photo = UIImageView()
+//        photo.translatesAutoresizingMaskIntoConstraints = false
+//        photo.contentMode = .scaleAspectFit
+//        photo.clipsToBounds = true
+//        return photo
+//    }()
 
     //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -56,73 +65,74 @@ class PhotosTableViewCell: UITableViewCell {
     }
 
     //MARK: - setup
-
-    func setupPhotoForTableCell(model: GalleryModel, indexPath: IndexPath){
+    func setupPhotoForTableCell(model: GalleryModel) {
         labelView.text = "Photos"
         arrowView.text = ">"
-        imageCollection.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath)
+        imageCollection.dataSource = self
+        imageCollection.delegate = self
+        imageCollection.reloadData()
     }
 
     func layout(){
-        [labelView, arrowView, imageCollection].forEach { photosContentView.addSubview($0) }
-        contentView.addSubview(photosContentView)
+//        imageCollection.addSubview(photoView)
+        [labelView, arrowView, imageCollection].forEach { imageContentView.addSubview($0) }
+        contentView.addSubview(imageContentView)
 
         NSLayoutConstraint.activate([
-            photosContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            photosContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            photosContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photosContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            labelView.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: 12),
-            labelView.topAnchor.constraint(equalTo: photosContentView.topAnchor, constant: 12),
+            labelView.leadingAnchor.constraint(equalTo: imageContentView.leadingAnchor, constant: 12),
+            labelView.topAnchor.constraint(equalTo: imageContentView.topAnchor, constant: 12),
 
-            arrowView.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -12),
+            arrowView.trailingAnchor.constraint(equalTo: imageContentView.trailingAnchor, constant: -12),
             arrowView.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
 
-            imageCollection.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: 12),
-            imageCollection.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -12),
+            imageCollection.leadingAnchor.constraint(equalTo: imageContentView.leadingAnchor, constant: 12),
+            imageCollection.trailingAnchor.constraint(equalTo: imageContentView.trailingAnchor, constant: -12),
             imageCollection.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
-            imageCollection.bottomAnchor.constraint(equalTo: photosContentView.bottomAnchor, constant: -12),
+            imageCollection.bottomAnchor.constraint(equalTo: imageContentView.bottomAnchor, constant: -12),
         ])
     }
 }
 
+
 // MARK: - UICollectionViewDataSource
 extension PhotosTableViewCell: UICollectionViewDataSource {
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        gallery.count
+        4
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath) as? GalleryCollectionViewCell else { return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.identifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell()}
 
-        cell.setupGalleryCell(model: gallery[indexPath.section])
+        cell.setupImageCollectionCell(model: gallery[indexPath.item])
+        cell.layer.cornerRadius = 5
         return cell
     }
 }
 
+ 
 // MARK: - UICollectionViewDelegate
 extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
 
     private var inset: CGFloat { return 8 }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.width - inset * 5) / 4
-        return CGSize(width: width, height: width)
+//        let width = (UIScreen.main.bounds.width - inset * 3) / 4
+//        let height = width * 9 / 16
+        return CGSize(width: 100, height: 100)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 12
+        return 8
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
     }
-
 }
 
