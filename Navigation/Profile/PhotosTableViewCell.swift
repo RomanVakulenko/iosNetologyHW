@@ -60,9 +60,9 @@ class PhotosTableViewCell: UITableViewCell {
     func setupPhotoForTableCell(model: GalleryModel) {
         labelView.text = "Photos"
         arrowView.text = ">"
-        imageCollection.dataSource = self
-        imageCollection.delegate = self
-        imageCollection.reloadData()
+//        imageCollection.dataSource = self
+//        imageCollection.delegate = self
+//        imageCollection.reloadData()
     }
 
     func layout(){
@@ -125,7 +125,7 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        что написать, чтобы перейти в галлерею- контроллер ???
+//        что написать, чтобы перейти в галлерею - контроллер ???
 //            let galleryVC = GallaryCollectionViewController()
 //            navigationController?.pushViewController(galleryVC, animated: true)
     }
