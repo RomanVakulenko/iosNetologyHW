@@ -49,7 +49,7 @@ class GallaryCollectionViewController: UIViewController {
     }
 }
 
-    // MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension GallaryCollectionViewController: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -68,24 +68,21 @@ extension GallaryCollectionViewController: UICollectionViewDataSource {
     }
 }
 
-    // MARK: - UICollectionViewDelegate
-    extension GallaryCollectionViewController: UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDelegate
+extension GallaryCollectionViewController: UICollectionViewDelegateFlowLayout {
 
-        private var inset: CGFloat { return 8 }
+    private var inset: CGFloat { return 8 }
 
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = (collectionView.bounds.width - inset * 4) / 3
-            return CGSize(width: width, height: width)
-        }
-
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            inset
-        }
-
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        }
-
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.bounds.width - inset * 4) / 3
+        return CGSize(width: width, height: width)
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        inset
+    }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+    }
+}

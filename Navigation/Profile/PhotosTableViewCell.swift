@@ -100,7 +100,6 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath) as? GalleryCollectionViewCell else { return UICollectionViewCell()}
-        
 
         cell.setupGalleryCell(model: gallery[indexPath.section])
         return cell
@@ -126,3 +125,4 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     }
 
 }
+

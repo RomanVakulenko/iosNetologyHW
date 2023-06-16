@@ -40,7 +40,7 @@ class GalleryCollectionViewCell: UICollectionViewCell {
             photoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             photoView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            photoView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }

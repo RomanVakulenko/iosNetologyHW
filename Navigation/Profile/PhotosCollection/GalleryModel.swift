@@ -21,3 +21,4 @@ struct GalleryModel {
         return imageArr
     }
 }
+

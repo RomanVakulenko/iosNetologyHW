@@ -26,7 +26,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
-        view.backgroundColor = #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
+        view.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
     }
 
     override func viewWillLayoutSubviews() {
@@ -36,7 +36,7 @@ final class ProfileViewController: UIViewController {
 
     //MARK: - private methods
     private func layout() {
-        
+
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -58,7 +58,7 @@ extension ProfileViewController: UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return postModel.count 
+            return postModel.count
         default: return 0
         }
     }
@@ -90,7 +90,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             let header = ProfileHeaderView()
-            header.backgroundColor = #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
+            header.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
             return header
         } else {
             return nil
@@ -103,3 +103,5 @@ extension ProfileViewController: UITableViewDelegate {
 //        navigationController?.pushViewController(galleryVC, animated: true)
 //    }
 }
+
+
