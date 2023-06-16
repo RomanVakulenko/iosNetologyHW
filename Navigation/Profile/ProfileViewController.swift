@@ -58,7 +58,7 @@ extension ProfileViewController: UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return postModel.count
+            return postModel.count 
         default: return 0
         }
     }
