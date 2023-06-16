@@ -17,7 +17,7 @@ class GallaryCollectionViewController: UIViewController {
 
         let imageCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         imageCollection.translatesAutoresizingMaskIntoConstraints = false
-        imageCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
+        imageCollection.register(GalleryCollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
 
         return imageCollection
     }()
@@ -27,6 +27,12 @@ class GallaryCollectionViewController: UIViewController {
         super.viewDidLoad()
         layout()
         setupCollection()
+        view.backgroundColor = .white
+
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
         navigationItem.title = "Photo Gallery"
     }
 
@@ -75,7 +81,7 @@ extension GallaryCollectionViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.bounds.width - inset * 4) / 3
-        return CGSize(width: 50, height: 50)
+        return CGSize(width: width, height: width)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

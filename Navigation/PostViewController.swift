@@ -11,6 +11,11 @@ final class PostViewController: UIViewController {
 
     override func viewDidLoad() { 
         super.viewDidLoad()
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "More info",
                                                                  style: .plain,
                                                                  target: self,

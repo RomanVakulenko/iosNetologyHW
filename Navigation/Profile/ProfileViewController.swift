@@ -34,6 +34,11 @@ final class ProfileViewController: UIViewController {
         layout()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+
     //MARK: - private methods
     private func layout() {
 
@@ -96,11 +101,11 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
 
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let photo = gallery[indexPath.row]
-//        let galleryVC = GallaryCollectionViewController()
-//        navigationController?.pushViewController(galleryVC, animated: true)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let photo = gallery[indexPath.row]
+        let galleryVC = GallaryCollectionViewController()
+        navigationController?.pushViewController(galleryVC, animated: true)
+    }
 }
 
 
