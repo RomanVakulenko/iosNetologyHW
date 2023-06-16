@@ -47,46 +47,6 @@ final class ProfileViewController: UIViewController {
 }
 
 
-//// MARK: - UICollectionViewDataSource
-//extension ProfileViewController: UICollectionViewDataSource {
-//
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        1
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        gallery.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath) as? GalleryCollectionViewCell else { return UICollectionViewCell()}
-//
-//        cell.setupGalleryCell(model: gallery[indexPath.item])
-//        return cell
-//    }
-//}
-//
-//// MARK: - UICollectionViewDelegate
-//extension ProfileViewController: UICollectionViewDelegateFlowLayout {
-//
-//    private var inset: CGFloat { return 8 }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = (collectionView.bounds.width - inset * 5) / 4
-//        return CGSize(width: width, height: width)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 12
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-//    }
-//
-//}
-
-
 // MARK: - UITableViewDataSource
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -108,7 +68,7 @@ extension ProfileViewController: UITableViewDataSource {
         case 0:
             let photosCell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
 
-            photosCell.setupPhotoForTableCell(model: gallery[indexPath.item], indexPath: indexPath)
+            photosCell.setupPhotoForTableCell(model: gallery[indexPath.row], indexPath: indexPath)
             photosCell.selectionStyle = .default
             return photosCell
 
@@ -137,9 +97,9 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let photo = gallery[indexPath.row]
-        let galleryVC = GallaryCollectionViewController()
-        navigationController?.pushViewController(galleryVC, animated: true)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let photo = gallery[indexPath.row]
+//        let galleryVC = GallaryCollectionViewController()
+//        navigationController?.pushViewController(galleryVC, animated: true)
+//    }
 }
