@@ -11,9 +11,10 @@ final class CollectionViewCell: UICollectionViewCell {
 
     private lazy var photoView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 6
         return imageView
     }()
 
@@ -40,7 +41,6 @@ final class CollectionViewCell: UICollectionViewCell {
             photoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             photoView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-//            photoView.heightAnchor.constraint(equalToConstant: 100),
             photoView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
         ])
     }

@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController {
         table.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         table.dataSource = self
         table.delegate = self
+        table.sectionHeaderTopPadding = 0
         return table
     }()
 
@@ -73,7 +74,7 @@ extension ProfileViewController: UITableViewDataSource {
             let photosCell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
 
             photosCell.setupPhotoForTableCell(model: gallery[indexPath.row])
-            photosCell.selectionStyle = .default
+            photosCell.selectionStyle = .none
             return photosCell
 
         case 1:
@@ -101,8 +102,23 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 150
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return .leastNonzeroMagnitude
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let photo = gallery[indexPath.row]
         let galleryVC = GallaryCollectionViewController()
         navigationController?.pushViewController(galleryVC, animated: true)
     }

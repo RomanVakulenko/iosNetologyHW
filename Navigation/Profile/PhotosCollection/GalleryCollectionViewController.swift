@@ -28,12 +28,12 @@ class GallaryCollectionViewController: UIViewController {
         layout()
         setupCollection()
         view.backgroundColor = .white
-
+        navigationItem.title = "Photo Gallery"
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "Photo Gallery"
     }
 
     private func setupCollection(){
@@ -83,12 +83,16 @@ extension GallaryCollectionViewController: UICollectionViewDelegateFlowLayout {
         let width = (collectionView.bounds.width - inset * 4) / 3
         return CGSize(width: width, height: width)
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        inset
-    }
-
+    //отступы по периметру дисплея
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+    }
+    //между рядами-строками для вертикальной коллекции
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+       inset
+    }
+    // между элементами в 1 строке - вертикальная коллекции, в 1 столбце-горизонтКоллекц
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        inset
     }
 }

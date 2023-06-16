@@ -12,7 +12,7 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     private lazy var photoView: UIImageView = {
         let photo = UIImageView()
         photo.translatesAutoresizingMaskIntoConstraints = false
-        photo.contentMode = .scaleAspectFit
+        photo.contentMode = .scaleAspectFill
         photo.clipsToBounds = true
         return photo
     }()

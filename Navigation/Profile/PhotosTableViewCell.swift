@@ -46,14 +46,6 @@ class PhotosTableViewCell: UITableViewCell {
         return imageCollection
     }()
 
-//    private lazy var photoView: UIImageView = {
-//        let photo = UIImageView()
-//        photo.translatesAutoresizingMaskIntoConstraints = false
-//        photo.contentMode = .scaleAspectFit
-//        photo.clipsToBounds = true
-//        return photo
-//    }()
-
     //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -74,7 +66,6 @@ class PhotosTableViewCell: UITableViewCell {
     }
 
     func layout(){
-//        imageCollection.addSubview(photoView)
         [labelView, arrowView, imageCollection].forEach { imageContentView.addSubview($0) }
         contentView.addSubview(imageContentView)
 
@@ -103,14 +94,13 @@ class PhotosTableViewCell: UITableViewCell {
 extension PhotosTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        gallery.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.identifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell()}
 
         cell.setupImageCollectionCell(model: gallery[indexPath.item])
-        cell.layer.cornerRadius = 5
         return cell
     }
 }
@@ -122,17 +112,22 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     private var inset: CGFloat { return 8 }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = (UIScreen.main.bounds.width - inset * 3) / 4
-//        let height = width * 9 / 16
-        return CGSize(width: 100, height: 100)
+        let width = (collectionView.bounds.width - 24 ) / 4
+        return CGSize(width: width, height: width * 5.6 / 7)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
+        inset
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        что написать, чтобы перейти в галлерею- контроллер ???
+//            let galleryVC = GallaryCollectionViewController()
+//            navigationController?.pushViewController(galleryVC, animated: true)
     }
 }
 
