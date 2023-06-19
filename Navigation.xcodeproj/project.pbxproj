@@ -68,7 +68,6 @@
 		AD79F4B62A0556350035A66A = {
 			isa = PBXGroup;
 			children = (
-				ADBE209C2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift */,
 				AD79F4C12A0556350035A66A /* Navigation */,
 				AD79F4C02A0556350035A66A /* Products */,
 			);
@@ -108,6 +107,7 @@
 				ADA8958D2A30DD100093223E /* ProfilePosts.swift */,
 				ADBA8E562A0E53CE00D8060C /* ProfileHeaderView.swift */,
 				ADBE20912A3B0656002C59C5 /* PhotosTableViewCell.swift */,
+				ADBE209C2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift */,
 				ADA8958F2A322CBB0093223E /* ProfileTableViewCell.swift */,
 				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
 				ADBE20952A3B1646002C59C5 /* PhotosCollection */,

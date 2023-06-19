@@ -39,7 +39,7 @@ class PhotosTableViewCell: UITableViewCell {
         let imageCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         imageCollection.translatesAutoresizingMaskIntoConstraints = false
         imageCollection.showsHorizontalScrollIndicator = false
-        imageCollection.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.identifier)
+        imageCollection.register(ImageCollectionForTableCell.self, forCellWithReuseIdentifier: ImageCollectionForTableCell.identifier)
         imageCollection.dataSource = self
         imageCollection.delegate = self
         imageCollection.reloadData()
