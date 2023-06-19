@@ -17,9 +17,11 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         return photo
     }()
 
+    //MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
+        prepareForReuse()
     }
 
     required init?(coder: NSCoder) {
@@ -32,6 +34,9 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         photoView.image = UIImage(named: model.photo)
     }
 
+    override func prepareForReuse() {
+        photoView.image = nil
+    }
 
     //MARK: - layout
     private func layout(){
@@ -40,8 +45,8 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             photoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            photoView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            photoView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            photoView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
