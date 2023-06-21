@@ -11,7 +11,7 @@ final class ProfileHeaderView: UIView {
 
     private let avatarHeight: CGFloat = 100
 
-    private lazy var avatarView: UIView = {
+    lazy var avatarView: UIView = {
         let imageView = UIImageView(image: UIImage(named: "Simba"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = avatarHeight/2
@@ -70,11 +70,7 @@ final class ProfileHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(avatarView)
-        addSubview(nameLabel)
-        addSubview(statusLabel)
-        addSubview(textField)
-        addSubview(setStatusButton)
+        [avatarView, nameLabel, statusLabel, textField, setStatusButton].forEach { self.addSubview($0) }
         setUpConstraints()
     }
 
@@ -120,7 +116,6 @@ final class ProfileHeaderView: UIView {
 
 extension ProfileHeaderView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        statusLabel.text = textField.text
         textField.resignFirstResponder() //скрывает клаву по нажатию return
         return true
     }

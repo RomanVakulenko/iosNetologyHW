@@ -11,6 +11,14 @@ final class ProfileViewController: UIViewController {
 
     private let postModel = ProfilePosts.createProfilePosts()
     private let gallery = GalleryModel.createMockModel()
+    private let header = ProfileHeaderView()
+
+    private var avatarLeading = NSLayoutConstraint()
+    private var avatarTrailing = NSLayoutConstraint()
+    private var avatarWidth = NSLayoutConstraint()
+    private var avatarCenterY = NSLayoutConstraint()
+
+    private var isExpandedAvatar = false
 
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -19,14 +27,32 @@ final class ProfileViewController: UIViewController {
         table.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         table.dataSource = self
         table.delegate = self
-        table.sectionHeaderTopPadding = 0
         return table
+    }()
+
+    private lazy var baseplateForExpandedAvatar: UIView = {
+        let opacityView = UIView()
+        opacityView.translatesAutoresizingMaskIntoConstraints = false
+        opacityView.backgroundColor = .black
+        opacityView.alpha = 0.0
+        return opacityView
+    }()
+
+    private lazy var buttonForCloseExpandedAvatar: UIView = {
+        let button = UIButton(type: .close)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(closeFullScreenAvatar(_:)), for: .touchUpInside)
+        return button
     }()
 
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
+        view.addSubview(baseplateForExpandedAvatar)
+        baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatar)
         view.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
     }
 
@@ -34,21 +60,66 @@ final class ProfileViewController: UIViewController {
         super.viewWillLayoutSubviews()
         layout()
     }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupGesture()
+    }
 
     //MARK: - private methods
     private func layout() {
-
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            baseplateForExpandedAvatar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            baseplateForExpandedAvatar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            baseplateForExpandedAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            baseplateForExpandedAvatar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            buttonForCloseExpandedAvatar.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor, constant: -8),
+            buttonForCloseExpandedAvatar.topAnchor.constraint(equalTo: baseplateForExpandedAvatar.topAnchor, constant: 8),
+            buttonForCloseExpandedAvatar.widthAnchor.constraint(equalToConstant: 20),
+            buttonForCloseExpandedAvatar.heightAnchor.constraint(equalToConstant: 20),
         ])
+    }
+
+    private func setUpExpandedAvatarConstraints(){
+        avatarLeading = header.avatarView.leadingAnchor.constraint(equalTo: baseplateForExpandedAvatar.leadingAnchor)
+        avatarTrailing = header.avatarView.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor)
+        avatarWidth = header.avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
+        avatarCenterY = header.avatarView.centerYAnchor.constraint(equalTo: baseplateForExpandedAvatar.centerYAnchor)
+        NSLayoutConstraint.activate([avatarLeading, avatarTrailing, avatarWidth, avatarCenterY])
+    }
+
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandAvatar))
+        tableView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func expandAvatar() {
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) { [weak self] in
+                guard let self else {return}
+                self.setUpExpandedAvatarConstraints()
+                self.header.avatarView.layer.cornerRadius = 0
+                self.baseplateForExpandedAvatar.alpha = 0.5
+                self.view.layoutIfNeeded()
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.3) { [weak self] in
+                guard let self else {return}
+                self.buttonForCloseExpandedAvatar.alpha = 0.5
+            }
+        }
+    }
+
+    @objc func closeFullScreenAvatar(_ sender: UIButton) {
+
     }
 }
 
@@ -94,7 +165,6 @@ extension ProfileViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
-            let header = ProfileHeaderView()
             header.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
             return header
         } else {
