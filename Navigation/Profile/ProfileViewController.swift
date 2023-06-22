@@ -50,6 +50,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(tableView)
         view.addSubview(baseplateForExpandedAvatar)
+        view.addSubview(header.avatarView)
         baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatar)
 //        header.addSubview(header.avatarView) // не понимаю как И положить аватарку на baseplateForExpandedAvatar (смог только так добиться приближенного решения) и сделать его видимым, И потом выводить аватар поверх подложки...
         view.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
@@ -81,41 +82,45 @@ final class ProfileViewController: UIViewController {
             baseplateForExpandedAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             baseplateForExpandedAvatar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            header.avatarView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 16),
-            header.avatarView.topAnchor.constraint(equalTo: header.topAnchor, constant: 16),
+            header.avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            header.avatarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             header.avatarView.widthAnchor.constraint(equalToConstant: 100),
             header.avatarView.heightAnchor.constraint(equalToConstant: 100),
 
-            buttonForCloseExpandedAvatar.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor, constant: 0),
-            buttonForCloseExpandedAvatar.topAnchor.constraint(equalTo: baseplateForExpandedAvatar.topAnchor, constant: 0),
+            buttonForCloseExpandedAvatar.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor, constant: -8),
+            buttonForCloseExpandedAvatar.topAnchor.constraint(equalTo: baseplateForExpandedAvatar.topAnchor, constant: 8),
             buttonForCloseExpandedAvatar.widthAnchor.constraint(equalToConstant: 20),
             buttonForCloseExpandedAvatar.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
 
-    private func setUpExpandedAvatarConstraints(){
-        view.addSubview(header.avatarView)
-        avatarLeading = header.avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        avatarTrailing = header.avatarView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        avatarWidth = header.avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
-        avatarCenterY = header.avatarView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        NSLayoutConstraint.activate([avatarLeading, avatarTrailing, avatarWidth, avatarCenterY])
-    }
+//    private func setUpExpandedAvatarConstraints(){
+//        view.addSubview(header.avatarView)
+//        avatarLeading = header.avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+//        avatarTrailing = header.avatarView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+//        avatarWidth = header.avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
+//        avatarCenterY = header.avatarView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+//        NSLayoutConstraint.activate([avatarLeading, avatarTrailing, avatarWidth, avatarCenterY])
+//    }
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandAvatar))
-        tableView.addGestureRecognizer(tapGesture)
+        header.avatarView.addGestureRecognizer(tapGesture)
+        header.avatarView.isUserInteractionEnabled = true
     }
 
     @objc func expandAvatar() {
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) { [weak self] in
                 guard let self else {return}
-                self.setUpExpandedAvatarConstraints()
+//                self.setUpExpandedAvatarConstraints()
+                self.header.avatarView.layer.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width)
+                self.header.avatarView.center = self.view.center
                 self.header.avatarView.layer.cornerRadius = 0
-//                self.header.avatarView.alpha = 1 //не меняет, видимо из-за того, что подложка 50% прозрачности
-                self.baseplateForExpandedAvatar.alpha = 0.5
+                self.header.avatarView.layer.borderWidth = 0
+                self.header.avatarView.contentMode = .scaleAspectFit
 
+                self.baseplateForExpandedAvatar.alpha = 0.5
                 self.view.layoutIfNeeded()
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.3) { [weak self] in
@@ -133,9 +138,10 @@ final class ProfileViewController: UIViewController {
             }
             UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) { [weak self] in
                 guard let self else {return}
-                NSLayoutConstraint.deactivate([avatarLeading, avatarTrailing, avatarWidth, avatarCenterY])
+                header.addSubview(header.avatarView)
                 self.header.avatarView.layer.cornerRadius = 50
-                header.addSubview(header.avatarView) //костыль и при анимации прыгает откуда-то сверху
+                self.header.avatarView.layer.borderWidth = 3
+
                 self.baseplateForExpandedAvatar.alpha = 0.0
                 self.view.layoutIfNeeded()
             }
