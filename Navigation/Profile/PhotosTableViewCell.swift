@@ -46,6 +46,42 @@ class PhotosTableViewCell: UITableViewCell {
         return imageCollection
     }()
 
+
+//    private lazy var picView: UIImageView = {
+//        let pic = UIImageView()
+//        pic.translatesAutoresizingMaskIntoConstraints = false
+//        pic.layer.cornerRadius = 10
+//        pic.image = UIImage(named: "1")
+//        pic.clipsToBounds = true
+//        return pic
+//    }()
+//    private lazy var pic2View: UIImageView = {
+//        let pic = UIImageView()
+//        pic.translatesAutoresizingMaskIntoConstraints = false
+//        pic.layer.cornerRadius = 10
+//        pic.image = UIImage(named: "2")
+//        pic.clipsToBounds = true
+//        return pic
+//    }()
+//    private lazy var pic3View: UIImageView = {
+//        let pic = UIImageView()
+//        pic.translatesAutoresizingMaskIntoConstraints = false
+//        pic.layer.cornerRadius = 10
+//        pic.image = UIImage(named: "3")
+//        pic.clipsToBounds = true
+//        return pic
+//    }()
+//    private lazy var pic4View: UIImageView = {
+//        let pic = UIImageView()
+//        pic.translatesAutoresizingMaskIntoConstraints = false
+//        pic.layer.cornerRadius = 10
+//        pic.image = UIImage(named: "4")
+//        pic.clipsToBounds = true
+//        return pic
+//    }()
+
+//    var tapHandler: (() -> ())? // это свойство нужно добавить модели вьюхи где будешь юзать (например модель ячейки или модель панели в ячейке)
+
     //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -77,6 +113,26 @@ class PhotosTableViewCell: UITableViewCell {
 
             arrowView.trailingAnchor.constraint(equalTo: imageContentView.trailingAnchor, constant: -12),
             arrowView.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
+
+//            picView.leadingAnchor.constraint(equalTo: imageContentView.leadingAnchor, constant: 12),
+//            picView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 12*5)/4),
+//            picView.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
+//            picView.bottomAnchor.constraint(equalTo: imageContentView.bottomAnchor, constant: -12),
+//
+//            pic2View.leadingAnchor.constraint(equalTo: picView.trailingAnchor, constant: 12),
+//            pic2View.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 12*5)/4),
+//            pic2View.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
+//            pic2View.bottomAnchor.constraint(equalTo: imageContentView.bottomAnchor, constant: -12),
+//
+//            pic3View.leadingAnchor.constraint(equalTo: pic2View.trailingAnchor, constant: 12),
+//            pic3View.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 12*5)/4),
+//            pic3View.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
+//            pic3View.bottomAnchor.constraint(equalTo: imageContentView.bottomAnchor, constant: -12),
+//
+//            pic4View.leadingAnchor.constraint(equalTo: pic3View.trailingAnchor, constant: 12),
+//            pic4View.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 12*5)/4),
+//            pic4View.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 12),
+//            pic4View.bottomAnchor.constraint(equalTo: imageContentView.bottomAnchor, constant: -12),
 
             imageCollection.leadingAnchor.constraint(equalTo: imageContentView.leadingAnchor, constant: 12),
             imageCollection.trailingAnchor.constraint(equalTo: imageContentView.trailingAnchor, constant: -12),
