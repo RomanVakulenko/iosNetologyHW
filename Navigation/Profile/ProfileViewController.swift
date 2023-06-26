@@ -52,15 +52,14 @@ final class ProfileViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(baseplateForExpandedAvatar)
         baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatar)
-//        header.addSubview(header.avatarView)
         view.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
-        print("1=====================View did load")
+        print("1_View did load")
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         layout()
-        print("2-----View will layout subviews-----------------------")
+        print("2_View will layout subviews")
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -69,7 +68,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupGesture()
-        print("3-------______________________________========View did appear")
+        print("3_View did appear")
     }
 
     //MARK: - private methods
@@ -102,7 +101,7 @@ final class ProfileViewController: UIViewController {
             header.avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.avatarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            header.avatarView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            header.avatarView.heightAnchor.constraint(equalToConstant: 400),
             header.avatarView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
         NSLayoutConstraint.activate(avatarConstraints)
@@ -115,11 +114,12 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc func expandAvatar() {
-        print("4----------------------Avatar view tapped")
+        print("4_Avatar view tapped")
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) { [weak self] in
                 guard let self else {return}
                 view.addSubview(header.avatarView)
+//                self.header.avatarView.layer.frame = CGRect(x: 0, y: 0, width: 390, height: 390)
                 self.setUpExpandedAvatarConstraints()
                 self.header.avatarView.layer.cornerRadius = 0
                 self.header.avatarView.layer.borderWidth = 0
@@ -134,8 +134,8 @@ final class ProfileViewController: UIViewController {
         }
     }
 
-    @objc func closeFullScreenAvatar(_ sender: UIButton) {
-        print("5-------------------Button for close expanded avatar tapped")
+    @objc func closeFullScreenAvatar(_ sendкer: UIButton) {
+        print("5_Button for close expanded avatar tapped")
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.3) { [weak self] in
                 guard let self else {return}
@@ -223,7 +223,9 @@ extension ProfileViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let galleryVC = GallaryCollectionViewController()
-        navigationController?.pushViewController(galleryVC, animated: true)
+        if indexPath.section == 0 {
+            navigationController?.pushViewController(galleryVC, animated: true)
+        }
     }
 }
 
