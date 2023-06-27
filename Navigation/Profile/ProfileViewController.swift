@@ -37,7 +37,7 @@ final class ProfileViewController: UIViewController {
         return opacityView
     }()
 
-    private lazy var buttonForCloseExpandedAvatar: UIButton = {
+    private lazy var buttonForCloseExpandedAvatarView: UIButton = {
         let button = UIButton(type: .close)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0.0
@@ -46,12 +46,21 @@ final class ProfileViewController: UIViewController {
         return button
     }()
 
+    private lazy var transparentBaseplateForAvatarView: UIView = {
+        let opacityView = UIView()
+        opacityView.translatesAutoresizingMaskIntoConstraints = false
+        opacityView.backgroundColor = .none
+        opacityView.isUserInteractionEnabled = false
+        return opacityView
+    }()
+
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
         view.addSubview(baseplateForExpandedAvatar)
-        baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatar)
+        view.addSubview(transparentBaseplateForAvatarView)
+        baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatarView)
         view.backgroundColor =  #colorLiteral(red: 0.9495324492, green: 0.9487351775, blue: 0.9706708789, alpha: 1)
         print("1_View did load")
     }
@@ -84,24 +93,23 @@ final class ProfileViewController: UIViewController {
             baseplateForExpandedAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             baseplateForExpandedAvatar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            header.avatarView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 16),
-            header.avatarView.topAnchor.constraint(equalTo: header.topAnchor, constant: 16),
-            header.avatarView.widthAnchor.constraint(equalToConstant: 100),
-            header.avatarView.heightAnchor.constraint(equalToConstant: 100),
+            transparentBaseplateForAvatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transparentBaseplateForAvatarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            transparentBaseplateForAvatarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            transparentBaseplateForAvatarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            buttonForCloseExpandedAvatar.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor, constant: -8),
-            buttonForCloseExpandedAvatar.topAnchor.constraint(equalTo: baseplateForExpandedAvatar.topAnchor, constant: 8),
-            buttonForCloseExpandedAvatar.widthAnchor.constraint(equalToConstant: 20),
-            buttonForCloseExpandedAvatar.heightAnchor.constraint(equalToConstant: 20),
+            buttonForCloseExpandedAvatarView.trailingAnchor.constraint(equalTo: baseplateForExpandedAvatar.trailingAnchor, constant: -8),
+            buttonForCloseExpandedAvatarView.topAnchor.constraint(equalTo: baseplateForExpandedAvatar.topAnchor, constant: 8),
+            buttonForCloseExpandedAvatarView.widthAnchor.constraint(equalToConstant: 20),
+            buttonForCloseExpandedAvatarView.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
 
-    private func setUpExpandedAvatarConstraints(){
+    private func setupExpandedAvatarConstraints(){
         avatarConstraints = [
-            header.avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.avatarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            header.avatarView.heightAnchor.constraint(equalToConstant: 400),
+            header.avatarView.leadingAnchor.constraint(equalTo: transparentBaseplateForAvatarView.leadingAnchor),
+            header.avatarView.trailingAnchor.constraint(equalTo: transparentBaseplateForAvatarView.trailingAnchor),
+            header.avatarView.topAnchor.constraint(equalTo: transparentBaseplateForAvatarView.topAnchor, constant: 28),
             header.avatarView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
         NSLayoutConstraint.activate(avatarConstraints)
@@ -116,20 +124,21 @@ final class ProfileViewController: UIViewController {
     @objc func expandAvatar() {
         print("4_Avatar view tapped")
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
+
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) { [weak self] in
                 guard let self else {return}
-                view.addSubview(header.avatarView)
-//                self.header.avatarView.layer.frame = CGRect(x: 0, y: 0, width: 390, height: 390)
-                self.setUpExpandedAvatarConstraints()
+                transparentBaseplateForAvatarView.addSubview(header.avatarView)
+                self.setupExpandedAvatarConstraints()
                 self.header.avatarView.layer.cornerRadius = 0
                 self.header.avatarView.layer.borderWidth = 0
 
                 self.baseplateForExpandedAvatar.alpha = 0.5
                 self.view.layoutIfNeeded()
             }
+
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.3) { [weak self] in
                 guard let self else {return}
-                self.buttonForCloseExpandedAvatar.alpha = 0.5
+                self.buttonForCloseExpandedAvatarView.alpha = 0.5
             }
         }
     }
@@ -137,15 +146,18 @@ final class ProfileViewController: UIViewController {
     @objc func closeFullScreenAvatar(_ sendкer: UIButton) {
         print("5_Button for close expanded avatar tapped")
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
-            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.3) { [weak self] in
+
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.2) { [weak self] in
                 guard let self else {return}
-                self.buttonForCloseExpandedAvatar.alpha = 0.0
-                self.avatarConstraints.forEach { $0.isActive = false }
-                header.avatarView.removeFromSuperview()
+                self.buttonForCloseExpandedAvatarView.alpha = 0.0
+                header.avatarView.removeFromSuperview() //также удаляет и все констрейнты
             }
-            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) { [weak self] in
+
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.6) { [weak self] in
                 guard let self else {return}
                 header.addSubview(header.avatarView)
+                header.avatarView.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 16).isActive = true
+                header.avatarView.topAnchor.constraint(equalTo: header.topAnchor, constant: 16).isActive = true
                 self.header.avatarView.layer.cornerRadius = 50
                 self.header.avatarView.layer.borderWidth = 3
 
