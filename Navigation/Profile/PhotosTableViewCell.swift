@@ -43,6 +43,7 @@ class PhotosTableViewCell: UITableViewCell {
         imageCollection.dataSource = self
         imageCollection.delegate = self
         imageCollection.reloadData()
+//        imageCollection.isUserInteractionEnabled = false //если не нужно взаимодействовать с элементами коллекции
         return imageCollection
     }()
 
@@ -179,8 +180,9 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        что написать, чтобы по тапу перейти в галлерею - контроллер ???
-//            let galleryVC = GallaryCollectionViewController()
+            let galleryVC = GallaryCollectionViewController()
 //            navigationController?.pushViewController(galleryVC, animated: true)
+        UIApplication.topViewController()!.navigationController?.pushViewController(galleryVC, animated: true)
         print(indexPath)
     }
 }

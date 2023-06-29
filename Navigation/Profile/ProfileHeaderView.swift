@@ -90,7 +90,7 @@ final class ProfileHeaderView: UIView {
             avatarView.widthAnchor.constraint(equalToConstant: avatarHeight),
             avatarView.heightAnchor.constraint(equalToConstant: avatarHeight),
             
-            nameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -50),
+            nameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 157),
             nameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 18),
             nameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             nameLabel.heightAnchor.constraint(equalToConstant: 20),

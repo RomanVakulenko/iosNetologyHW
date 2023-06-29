@@ -26,6 +26,7 @@
 		ADBE20992A3B1B0A002C59C5 /* GalleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE20982A3B1B0A002C59C5 /* GalleryModel.swift */; };
 		ADBE209B2A3C5738002C59C5 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE209A2A3C5738002C59C5 /* GalleryCollectionViewCell.swift */; };
 		ADBE209D2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBE209C2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift */; };
+		ADBF8EC02A4ADB5A0079307E /* UIApplication_extForNavTabPresentControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBF8EBF2A4ADB5A0079307E /* UIApplication_extForNavTabPresentControllers.swift */; };
 		ADCE4C812A08E78500A4575E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE4C802A08E78500A4575E /* Post.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		ADBE20982A3B1B0A002C59C5 /* GalleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryModel.swift; sourceTree = "<group>"; };
 		ADBE209A2A3C5738002C59C5 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		ADBE209C2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionForTableCell.swift; sourceTree = "<group>"; };
+		ADBF8EBF2A4ADB5A0079307E /* UIApplication_extForNavTabPresentControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication_extForNavTabPresentControllers.swift; sourceTree = "<group>"; };
 		ADCE4C802A08E78500A4575E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,6 +112,7 @@
 				ADBE209C2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift */,
 				ADA8958F2A322CBB0093223E /* ProfileTableViewCell.swift */,
 				AD7AAEBB2A07756000058A30 /* ProfileViewController.swift */,
+				ADBF8EBF2A4ADB5A0079307E /* UIApplication_extForNavTabPresentControllers.swift */,
 				ADBE20952A3B1646002C59C5 /* PhotosCollection */,
 			);
 			path = Profile;
@@ -210,6 +213,7 @@
 				ADBE209D2A3C71F4002C59C5 /* ImageCollectionForTableCell.swift in Sources */,
 				AD79F4C52A0556350035A66A /* SceneDelegate.swift in Sources */,
 				AD7CD8712A271D6C003B8B81 /* LogInViewController.swift in Sources */,
+				ADBF8EC02A4ADB5A0079307E /* UIApplication_extForNavTabPresentControllers.swift in Sources */,
 				ADA895902A322CBB0093223E /* ProfileTableViewCell.swift in Sources */,
 				ADA8958E2A30DD100093223E /* ProfilePosts.swift in Sources */,
 				ADBA8E572A0E53CE00D8060C /* ProfileHeaderView.swift in Sources */,

@@ -240,5 +240,3 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
 }
-
-
