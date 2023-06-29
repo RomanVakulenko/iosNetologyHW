@@ -136,7 +136,7 @@ final class LogInViewController: UIViewController {
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
-        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements'
         ]
     }()
@@ -156,7 +156,7 @@ final class LogInViewController: UIViewController {
 
         //constrains of content
         logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        logoView.topAnchor.constraint(equalTo: contentView.topAnchor), //есть ниже отдельный
+        logoView.topAnchor.constraint(equalTo: contentView.topAnchor),
         logoView.widthAnchor.constraint(equalToConstant: 100),
         logoView.heightAnchor.constraint(equalToConstant: 100),
 
@@ -171,7 +171,7 @@ final class LogInViewController: UIViewController {
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
-        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),// отдельный был бы:  contentView.subviews.last?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         //constrains of stack doesn't need cause of alignment & distribution properties, also we set heights at elements' initialization
         ]
     }()

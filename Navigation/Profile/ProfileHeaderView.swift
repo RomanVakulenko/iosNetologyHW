@@ -11,12 +11,12 @@ final class ProfileHeaderView: UIView {
 
     private let avatarHeight: CGFloat = 100
 
-    private lazy var avatarView: UIView = {
+    lazy var avatarView: UIView = {
         let imageView = UIImageView(image: UIImage(named: "Simba"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = avatarHeight/2
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         (imageView.layer.borderWidth, imageView.layer.borderColor) = (3, UIColor.white.cgColor)
         return imageView
     }()
@@ -70,11 +70,7 @@ final class ProfileHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(avatarView)
-        addSubview(nameLabel)
-        addSubview(statusLabel)
-        addSubview(textField)
-        addSubview(setStatusButton)
+        [avatarView, nameLabel, statusLabel, textField, setStatusButton].forEach { self.addSubview($0) }
         setUpConstraints()
     }
 
@@ -87,14 +83,14 @@ final class ProfileHeaderView: UIView {
         textField.resignFirstResponder() //скрывает клаву по нажатию кнопки
     }
 
-    private func setUpConstraints(){
+    func setUpConstraints(){
         NSLayoutConstraint.activate([
             avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             avatarView.widthAnchor.constraint(equalToConstant: avatarHeight),
             avatarView.heightAnchor.constraint(equalToConstant: avatarHeight),
             
-            nameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -50),
+            nameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 157),
             nameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 18),
             nameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             nameLabel.heightAnchor.constraint(equalToConstant: 20),
@@ -120,7 +116,6 @@ final class ProfileHeaderView: UIView {
 
 extension ProfileHeaderView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        statusLabel.text = textField.text
         textField.resignFirstResponder() //скрывает клаву по нажатию return
         return true
     }
