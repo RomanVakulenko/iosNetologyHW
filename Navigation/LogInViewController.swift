@@ -44,6 +44,7 @@ final class LogInViewController: UIViewController {
         logInText.placeholder = "  Email or phone"
         logInText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         logInText.tintColor = .lightGray
+        logInText.backgroundColor = .systemGray6
         logInText.autocapitalizationType = .none
         logInText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: logInText.frame.height))
         logInText.leftViewMode = .always
@@ -62,11 +63,17 @@ final class LogInViewController: UIViewController {
     private lazy var passwordTextFieldView: UITextField = { [unowned self] in
         let passwordText = UITextField()
         passwordText.translatesAutoresizingMaskIntoConstraints = false
+        passwordText.autocorrectionType = .no
+        passwordText.keyboardType = .default
+        passwordText.returnKeyType = .done
+        passwordText.clearButtonMode = .whileEditing
+        passwordText.contentVerticalAlignment = .center
         passwordText.placeholder = "  Password"
         passwordText.textColor = .black
         passwordText.isSecureTextEntry = true
         passwordText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         passwordText.tintColor = .lightGray
+        passwordText.backgroundColor = .systemGray6
         passwordText.autocapitalizationType = .none
         passwordText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: passwordText.frame.height))
         passwordText.leftViewMode = .always
@@ -84,7 +91,6 @@ final class LogInViewController: UIViewController {
         stack.layer.borderColor = UIColor.lightGray.cgColor
         stack.layer.borderWidth = 0.5
         stack.layer.cornerRadius = 10
-        stack.backgroundColor = .systemGray6
         [logInTextFieldView, lineBetweenTextFields, passwordTextFieldView].forEach { stack.addArrangedSubview($0) }
         return stack
     }()
@@ -277,18 +283,67 @@ final class LogInViewController: UIViewController {
         buttonView.alpha = 1.0
     }
 
+
+//    Реализовать проверку на пустые поля логина и пароля. Если одно из полей пустое, то при нажатии на кнопку к этому полю должно применяться действие. Например: изменение цвета фона, рамки или подергивание.
+    private func isEmpty(loginTextField fieldLogin: UITextField, passwordTextField fieldPassword: UITextField, _ sender: UIButton) {
+        if (fieldLogin.text?.isEmpty ?? true) && (fieldPassword.text?.isEmpty ?? true) {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                fieldLogin.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                fieldPassword.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    fieldLogin.backgroundColor = .systemGray6
+                    fieldPassword.backgroundColor = .systemGray6
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if fieldLogin.text == "" {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                fieldLogin.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    fieldLogin.backgroundColor = .systemGray6
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if fieldPassword.text == "" {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                fieldPassword.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    fieldPassword.backgroundColor = .systemGray6
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+    }
+
     @objc func logInPressed(_ sender: UIButton){
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+        isEmpty(loginTextField: logInTextFieldView, passwordTextField: passwordTextFieldView, sender)
     }
 }
+
 
 
 
 extension LogInViewController: UITextFieldDelegate {
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { //hides keyboard at return tapped
         textField.resignFirstResponder()
         return true
     }
 }
+
+
