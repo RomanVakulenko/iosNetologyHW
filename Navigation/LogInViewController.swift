@@ -95,6 +95,16 @@ final class LogInViewController: UIViewController {
         return stack
     }()
 
+    private lazy var passwordWarningLabel: UILabel = {
+        let warningLabel = UILabel()
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        warningLabel.textColor = .red
+        warningLabel.text = "  Password has 5 or more characters"
+        warningLabel.font = .systemFont(ofSize: 15)
+        warningLabel.layer.opacity = 0
+        return warningLabel
+    }()
+
     private lazy var buttonView: UIButton = { [unowned self] in
         let logInButton = UIButton()
         logInButton.translatesAutoresizingMaskIntoConstraints = false
@@ -137,8 +147,11 @@ final class LogInViewController: UIViewController {
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         stackView.heightAnchor.constraint(equalToConstant: 100),
 
+        passwordWarningLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+        passwordWarningLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 15),
+
         buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.topAnchor.constraint(equalTo: passwordWarningLabel.bottomAnchor, constant: 24),
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
@@ -172,8 +185,11 @@ final class LogInViewController: UIViewController {
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         stackView.heightAnchor.constraint(equalToConstant: 100),
 
+        passwordWarningLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+        passwordWarningLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 15),
+
         buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.topAnchor.constraint(equalTo: passwordWarningLabel.bottomAnchor, constant: 24),
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
@@ -225,7 +241,7 @@ final class LogInViewController: UIViewController {
     private func addSubviews(){
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [logoView, stackView, buttonView].forEach { contentView.addSubview($0) }
+        [logoView, stackView, passwordWarningLabel, buttonView].forEach { contentView.addSubview($0) }
     }
 
     private func usePortraitConstraints() {
@@ -284,43 +300,47 @@ final class LogInViewController: UIViewController {
     }
 
 
-//    Реализовать проверку на пустые поля логина и пароля. Если одно из полей пустое, то при нажатии на кнопку к этому полю должно применяться действие. Например: изменение цвета фона, рамки или подергивание.
-    private func isEmpty(loginTextField fieldLogin: UITextField, passwordTextField fieldPassword: UITextField, _ sender: UIButton) {
-        if (fieldLogin.text?.isEmpty ?? true) && (fieldPassword.text?.isEmpty ?? true) {
+    private func isEmpty(loginTextField loginField: UITextField, passwordTextField passwordField: UITextField, passwordWarning: UILabel, _ sender: UIButton) {
+
+        if (loginField.text?.isEmpty ?? true) && (passwordField.text?.isEmpty ?? true) {
             UIView.animate(withDuration: 1) { [weak self] in
                 guard let self else { return }
-                fieldLogin.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
-                fieldPassword.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                loginField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordWarning.layer.opacity = 1
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 UIView.animate(withDuration: 1) { [weak self] in
                     guard let self else { return }
-                    fieldLogin.backgroundColor = .systemGray6
-                    fieldPassword.backgroundColor = .systemGray6
+                    loginField.backgroundColor = .systemGray6
+                    passwordField.backgroundColor = .systemGray6
+                    passwordWarning.layer.opacity = 0
                     self.view.layoutIfNeeded()
                 }
             }
-        } else if fieldLogin.text == "" {
+        } else if loginField.text == "" {
             UIView.animate(withDuration: 1) { [weak self] in
                 guard let self else { return }
-                fieldLogin.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                loginField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 UIView.animate(withDuration: 1) { [weak self] in
                     guard let self else { return }
-                    fieldLogin.backgroundColor = .systemGray6
+                    loginField.backgroundColor = .systemGray6
                     self.view.layoutIfNeeded()
                 }
             }
-        } else if fieldPassword.text == "" {
-            UIView.animate(withDuration: 1) { [weak self] in
+        } else if passwordField.text == "" || (passwordField.text?.count ?? 0) < 5 {
+            UIView.animate(withDuration: 2) { [weak self] in
                 guard let self else { return }
-                fieldPassword.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordWarning.layer.opacity = 1
                 self.view.layoutIfNeeded()
             } completion: { _ in
-                UIView.animate(withDuration: 1) { [weak self] in
+                UIView.animate(withDuration: 2) { [weak self] in
                     guard let self else { return }
-                    fieldPassword.backgroundColor = .systemGray6
+                    passwordField.backgroundColor = .systemGray6
+                    passwordWarning.layer.opacity = 0
                     self.view.layoutIfNeeded()
                 }
             }
@@ -331,7 +351,7 @@ final class LogInViewController: UIViewController {
     }
 
     @objc func logInPressed(_ sender: UIButton){
-        isEmpty(loginTextField: logInTextFieldView, passwordTextField: passwordTextFieldView, sender)
+        isEmpty(loginTextField: logInTextFieldView, passwordTextField: passwordTextFieldView, passwordWarning: passwordWarningLabel, sender)
     }
 }
 
