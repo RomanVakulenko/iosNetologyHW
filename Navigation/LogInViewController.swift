@@ -106,9 +106,7 @@ final class LogInViewController: UIViewController {
     }()
 
     private let login = "u"
-    private var correctLogin = false
     private let password = "uuu"
-    private var correctPassword = false
 
     private lazy var buttonView: UIButton = { [unowned self] in
         let logInButton = UIButton()
@@ -323,8 +321,8 @@ final class LogInViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 }
             }
-        } else if (loginField.text != login && loginField.text != "") && (passwordField.text != password && (passwordField.text?.count ?? 2) > 1) {
-            let bothFieldsAlert = UIAlertController(title: "Login & password aren't correct!", message: "", preferredStyle: .alert)
+        } else if (!isValidLogin(loginField.text ?? "") && loginField.text != "") && (passwordField.text != password && (passwordField.text?.count ?? 2) > 1) {
+            let bothFieldsAlert = UIAlertController(title: "Login & password are invalid!", message: "", preferredStyle: .alert)
             bothFieldsAlert.addAction(UIAlertAction(title: "Clear & change them", style: .default, handler: { _ in
                 loginField.text = ""
                 passwordField.text = ""
@@ -333,8 +331,8 @@ final class LogInViewController: UIViewController {
             bothFieldsAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(bothFieldsAlert, animated: true)
 
-        } else if loginField.text != login && loginField.text != "" {
-            let loginAlert = UIAlertController(title: "Login isn't correct!", message: "", preferredStyle: .alert)
+        } else if (!isValidLogin(loginField.text ?? "")) && loginField.text != "" {
+            let loginAlert = UIAlertController(title: "Login is invalid!", message: "", preferredStyle: .alert)
             loginAlert.addAction(UIAlertAction(title: "Clear & change it", style: .default, handler: { _ in
                 loginField.text = ""
                 loginField.becomeFirstResponder()
@@ -357,7 +355,7 @@ final class LogInViewController: UIViewController {
                 }
             }
         } else if passwordField.text != password {
-            let passwordAlert = UIAlertController(title: "Password isn't correct!", message: "", preferredStyle: .alert)
+            let passwordAlert = UIAlertController(title: "Password is invalid!", message: "", preferredStyle: .alert)
             passwordAlert.addAction(UIAlertAction(title: "Clear & change it", style: .default, handler: { _ in
                 passwordField.text = ""
                 passwordField.becomeFirstResponder()
@@ -391,7 +389,7 @@ final class LogInViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 }
             }
-        } else if loginField.text == login && passwordField.text == password {
+        } else if isValidLogin(loginField.text ?? "") && (passwordField.text == password) {
             let profileViewController = ProfileViewController()
             self.navigationController?.pushViewController(profileViewController, animated: true)
         }
@@ -410,6 +408,16 @@ extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool { //hides keyboard at return tapped
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension LogInViewController {
+
+    func isValidLogin(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
 }
 
