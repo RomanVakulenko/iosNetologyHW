@@ -41,9 +41,10 @@ final class LogInViewController: UIViewController {
         logInText.returnKeyType = .done
         logInText.clearButtonMode = .whileEditing
         logInText.contentVerticalAlignment = .center
-        logInText.placeholder = "  Email or phone"
+        logInText.placeholder = " Email or phone"
         logInText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         logInText.tintColor = .lightGray
+        logInText.backgroundColor = .systemGray6
         logInText.autocapitalizationType = .none
         logInText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: logInText.frame.height))
         logInText.leftViewMode = .always
@@ -62,11 +63,17 @@ final class LogInViewController: UIViewController {
     private lazy var passwordTextFieldView: UITextField = { [unowned self] in
         let passwordText = UITextField()
         passwordText.translatesAutoresizingMaskIntoConstraints = false
-        passwordText.placeholder = "  Password"
+        passwordText.autocorrectionType = .no
+        passwordText.keyboardType = .default
+        passwordText.returnKeyType = .done
+        passwordText.clearButtonMode = .whileEditing
+        passwordText.contentVerticalAlignment = .center
+        passwordText.placeholder = " Password"
         passwordText.textColor = .black
         passwordText.isSecureTextEntry = true
         passwordText.font = .systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         passwordText.tintColor = .lightGray
+        passwordText.backgroundColor = .systemGray6
         passwordText.autocapitalizationType = .none
         passwordText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: passwordText.frame.height))
         passwordText.leftViewMode = .always
@@ -84,10 +91,22 @@ final class LogInViewController: UIViewController {
         stack.layer.borderColor = UIColor.lightGray.cgColor
         stack.layer.borderWidth = 0.5
         stack.layer.cornerRadius = 10
-        stack.backgroundColor = .systemGray6
         [logInTextFieldView, lineBetweenTextFields, passwordTextFieldView].forEach { stack.addArrangedSubview($0) }
         return stack
     }()
+
+    private lazy var passwordWarningLabel: UILabel = {
+        let warningLabel = UILabel()
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        warningLabel.textColor = .red
+        warningLabel.text = " Password has 3 or more characters"
+        warningLabel.font = .systemFont(ofSize: 15)
+        warningLabel.layer.opacity = 0
+        return warningLabel
+    }()
+
+    private let login = "u"
+    private let password = "uuu"
 
     private lazy var buttonView: UIButton = { [unowned self] in
         let logInButton = UIButton()
@@ -131,8 +150,11 @@ final class LogInViewController: UIViewController {
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         stackView.heightAnchor.constraint(equalToConstant: 100),
 
+        passwordWarningLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+        passwordWarningLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 15),
+
         buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.topAnchor.constraint(equalTo: passwordWarningLabel.bottomAnchor, constant: 24),
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
@@ -166,8 +188,11 @@ final class LogInViewController: UIViewController {
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         stackView.heightAnchor.constraint(equalToConstant: 100),
 
+        passwordWarningLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+        passwordWarningLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 15),
+
         buttonView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+        buttonView.topAnchor.constraint(equalTo: passwordWarningLabel.bottomAnchor, constant: 24),
         buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         buttonView.heightAnchor.constraint(equalToConstant: 50),
@@ -219,7 +244,7 @@ final class LogInViewController: UIViewController {
     private func addSubviews(){
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [logoView, stackView, buttonView].forEach { contentView.addSubview($0) }
+        [logoView, stackView, passwordWarningLabel, buttonView].forEach { contentView.addSubview($0) }
     }
 
     private func usePortraitConstraints() {
@@ -258,7 +283,7 @@ final class LogInViewController: UIViewController {
     @objc func willShowKeyboard(_ notification: NSNotification) {
         guard let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height else { return }
         if scrollView.contentInset.bottom < keyboardHeight {
-            scrollView.contentInset.bottom += keyboardHeight
+            scrollView.contentInset.bottom += keyboardHeight //BUG: ставим 1 символ в логин, жмем кнопку, жмем на алерт и контент уезжает на высоту клавиатуры вверх, хотя не должен - помогите исправить
 //            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)//сдвигает вертикальный скролл индикатор на высоту клавиатуры
             scrollView.scrollRectToVisible(buttonView.frame, animated: true)
         }
@@ -277,18 +302,123 @@ final class LogInViewController: UIViewController {
         buttonView.alpha = 1.0
     }
 
+
+    private func isEmpty(loginTextField loginField: UITextField, passwordTextField passwordField: UITextField, passwordWarning: UILabel, _ sender: UIButton) {
+
+        if (loginField.text?.isEmpty ?? true) && (passwordField.text?.isEmpty ?? true) {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                loginField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordWarning.layer.opacity = 1
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    loginField.backgroundColor = .systemGray6
+                    passwordField.backgroundColor = .systemGray6
+                    passwordWarning.layer.opacity = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if (!isValidLogin(loginField.text ?? "") && loginField.text != "") && (passwordField.text != password && (passwordField.text?.count ?? 2) > 1) {
+            let bothFieldsAlert = UIAlertController(title: "Login & password are invalid!", message: "", preferredStyle: .alert)
+            bothFieldsAlert.addAction(UIAlertAction(title: "Clear & change them", style: .default, handler: { _ in
+                loginField.text = ""
+                passwordField.text = ""
+                loginField.becomeFirstResponder()
+            }))
+            bothFieldsAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(bothFieldsAlert, animated: true)
+
+        } else if (!isValidLogin(loginField.text ?? "")) && loginField.text != "" {
+            let loginAlert = UIAlertController(title: "Login is invalid!", message: "", preferredStyle: .alert)
+            loginAlert.addAction(UIAlertAction(title: "Clear & change it", style: .default, handler: { _ in
+                loginField.text = ""
+                loginField.becomeFirstResponder()
+            }))
+            loginAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(loginAlert, animated: true)
+
+        } else if (passwordField.text?.count ?? 1) > 0 && (passwordField.text?.count ?? 1) < 3 {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                passwordField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordWarning.layer.opacity = 1
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    passwordField.backgroundColor = .systemGray6
+                    passwordWarning.layer.opacity = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if passwordField.text != password {
+            let passwordAlert = UIAlertController(title: "Password is invalid!", message: "", preferredStyle: .alert)
+            passwordAlert.addAction(UIAlertAction(title: "Clear & change it", style: .default, handler: { _ in
+                passwordField.text = ""
+                passwordField.becomeFirstResponder()
+            }))
+            passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(passwordAlert, animated: true)
+
+        } else if loginField.text == "" {
+            UIView.animate(withDuration: 1) { [weak self] in
+                guard let self else { return }
+                loginField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 1) { [weak self] in
+                    guard let self else { return }
+                    loginField.backgroundColor = .systemGray6
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if passwordField.text == "" || (passwordField.text?.count ?? 0) < 3 {
+            UIView.animate(withDuration: 2) { [weak self] in
+                guard let self else { return }
+                passwordField.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.3)
+                passwordWarning.layer.opacity = 1
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                UIView.animate(withDuration: 2) { [weak self] in
+                    guard let self else { return }
+                    passwordField.backgroundColor = .systemGray6
+                    passwordWarning.layer.opacity = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else if isValidLogin(loginField.text ?? "") && (passwordField.text == password) {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+    }
+
     @objc func logInPressed(_ sender: UIButton){
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+        isEmpty(loginTextField: logInTextFieldView, passwordTextField: passwordTextFieldView, passwordWarning: passwordWarningLabel, sender)
     }
 }
+
 
 
 
 extension LogInViewController: UITextFieldDelegate {
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { //hides keyboard at return tapped
         textField.resignFirstResponder()
         return true
     }
 }
+
+extension LogInViewController {
+
+    func isValidLogin(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+}
+
+
