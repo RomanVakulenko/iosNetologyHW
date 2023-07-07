@@ -42,7 +42,7 @@ class ProfileTableViewCell: UITableViewCell {
         return descriptionLabel
     }()
 
-    private lazy var likesLabelView: UILabel = {
+    lazy var likesLabelView: UILabel = {
         let likesLabel = UILabel()
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
         likesLabel.font = .systemFont(ofSize: 16, weight: .regular)

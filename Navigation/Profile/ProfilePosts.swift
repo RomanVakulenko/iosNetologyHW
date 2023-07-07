@@ -7,12 +7,20 @@
 
 import UIKit
 
-struct ProfilePosts {
-    let author: String
-    let image: String
-    let description: String
-    let likes: Int
-    let views: Int
+class ProfilePosts {
+    var author = String()
+    var image = String()
+    var description = String()
+    var likes = Int()
+    var views = Int()
+
+    init(author: String, image: String, description: String, likes: Int, views: Int) {
+        self.author = author
+        self.image = image
+        self.description = description
+        self.likes = likes
+        self.views = views
+    }
 
     static func createProfilePosts() -> [ProfilePosts]{
         var model = [ProfilePosts]()

@@ -143,7 +143,7 @@ final class ProfileViewController: UIViewController {
         }
     }
 
-    @objc func closeFullScreenAvatar(_ sendкer: UIButton) {
+    @objc func closeFullScreenAvatar(_ sender: UIButton) {
         print("5_Button for close expanded avatar tapped")
         UIView.animateKeyframes(withDuration: 0.8, delay: 0) {
 
@@ -165,6 +165,18 @@ final class ProfileViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }
         }
+    }
+
+    @objc func increaseLikesAtTap(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: tableView) //получаем координату тапа
+        if let indexPath = tableView.indexPathForRow(at: tapLocation) { //получаем индексПаф по координате тапа в таблице
+            postModel[indexPath.row].likes += 1
+            //добираемся до ячейки и лейбла лайков
+            let cell = tableView.cellForRow(at: indexPath) as? ProfileTableViewCell
+            cell?.likesLabelView.text = "Likes: " + postModel[indexPath.row].likes.description
+            //перезагружаем строки таблицы по индексПаф
+            tableView.reloadRows(at: [indexPath], with: .none)
+            }
     }
 }
 
@@ -188,16 +200,18 @@ extension ProfileViewController: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let photosCell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
-
             photosCell.setupPhotoForTableCell(model: gallery[indexPath.row])
             photosCell.selectionStyle = .none
             return photosCell
 
         case 1:
             guard let cellForPosts = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as? ProfileTableViewCell else {return UITableViewCell()}
-
             cellForPosts.setupCell(model: postModel[indexPath.row])
             cellForPosts.selectionStyle = .none
+
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(increaseLikesAtTap(_:)))
+            cellForPosts.likesLabelView.addGestureRecognizer(tapGestureRecognizer)
+            cellForPosts.likesLabelView.isUserInteractionEnabled = true
             return cellForPosts
 
         default: return UITableViewCell()
@@ -237,6 +251,9 @@ extension ProfileViewController: UITableViewDelegate {
         let galleryVC = GallaryCollectionViewController()
         if indexPath.section == 0 {
             navigationController?.pushViewController(galleryVC, animated: true)
+        }
+        else if indexPath.section == 1 {
+//            print(postModel[indexPath.row].likes)
         }
     }
 }

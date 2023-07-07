@@ -84,22 +84,29 @@ final class ProfileHeaderView: UIView {
             textField.shake6 {
                 UIView.animateKeyframes(withDuration: 1, delay: 0) { [weak self] in
                     guard let self else {return}
-                    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.01) {
 //                        self.textField.text? += "Type new status HERE!"
 //                        self.textField.textColor = .red
                         self.textField.attributedPlaceholder = NSAttributedString(
                                 string: "Type new status HERE!",
                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.red])
                     }
-                    UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                    UIView.addKeyframe(withRelativeStartTime: 0.01, relativeDuration: 0.99) {
                         self.textField.attributedPlaceholder = NSAttributedString(
                             string: "Type new status HERE!",
-                            attributes: [NSAttributedString.Key.foregroundColor : UIColor.red.withAlphaComponent(0.5)])
+                            attributes: [NSAttributedString.Key.foregroundColor : UIColor.red.withAlphaComponent(0.6)])
+
                     }
                 }
             }
         } else if textField.hasText {
             statusLabel.text = textField.text
+        }
+        if statusLabel.text != "Waiting for something..." {
+            self.textField.text = nil
+            self.textField.attributedPlaceholder = NSAttributedString(
+                string: "Type new status",
+                attributes: [NSAttributedString.Key.foregroundColor : UIColor.black.withAlphaComponent(0.5)])
         }
         textFieldShouldReturn(textField) //textField перестает быть первым откликающимся
     }
