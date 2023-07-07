@@ -407,6 +407,7 @@ extension LogInViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool { //hides keyboard at return tapped
         textField.resignFirstResponder()
+        logInPressed(buttonView)
         return true
     }
 }

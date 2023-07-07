@@ -77,11 +77,34 @@ final class ProfileHeaderView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-
+//    При нажатии на кнопку Set status необходимо реализовать проверку на пустой UITextFiled с установкой статуса, по аналогии с логинкой.
     @objc func buttonPressed(_ sender: UIButton) {
-        statusLabel.text = textField.text
-        textField.resignFirstResponder() //скрывает клаву по нажатию кнопки
+
+        if !textField.hasText {
+            textField.shake6 {
+                UIView.animateKeyframes(withDuration: 1, delay: 0) { [weak self] in
+                    guard let self else {return}
+                    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+//                        self.textField.text? += "Type new status HERE!"
+//                        self.textField.textColor = .red
+                        self.textField.attributedPlaceholder = NSAttributedString(
+                                string: "Type new status HERE!",
+                                attributes: [NSAttributedString.Key.foregroundColor: UIColor.red])
+                    }
+                    UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                        self.textField.attributedPlaceholder = NSAttributedString(
+                            string: "Type new status HERE!",
+                            attributes: [NSAttributedString.Key.foregroundColor : UIColor.red.withAlphaComponent(0.5)])
+                    }
+                }
+            }
+        } else if textField.hasText {
+            statusLabel.text = textField.text
+        }
+        textFieldShouldReturn(textField) //textField перестает быть первым откликающимся
     }
+
+
 
     func setUpConstraints(){
         NSLayoutConstraint.activate([
@@ -116,7 +139,100 @@ final class ProfileHeaderView: UIView {
 
 extension ProfileHeaderView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder() //скрывает клаву по нажатию return
+        textField.resignFirstResponder() //textField перестает быть первым откликающимся
         return true
+    }
+}
+
+extension UIView {
+    func shake() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.duration = 0.6
+        animation.values = [-20.0, 20.0, -20.0, 20.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+        layer.add(animation, forKey: "shake")
+    }
+
+    func shake2(count: Float = 6, for duration: TimeInterval = 0.5, withTranslation translation: Float = 5) {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.repeatCount = count
+        animation.duration = duration/TimeInterval(animation.repeatCount)
+        animation.autoreverses = true
+        animation.values = [translation, -translation]
+        layer.add(animation, forKey: "shake")
+    }
+
+    func shake3(){
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 3
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
+        layer.add(animation, forKey: "position")
+    }
+
+    func shake4(view: UIView, for duration: TimeInterval = 0.5, withTranslation translation: CGFloat = 10) {
+        let propertyAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.3) {
+            view.layer.borderColor = UIColor.red.cgColor
+            view.layer.borderWidth = 1
+            view.transform = CGAffineTransform(translationX: translation, y: 0)
+        }
+        propertyAnimator.addAnimations({
+            view.transform = CGAffineTransform(translationX: 0, y: 0)
+        }, delayFactor: 0.2)
+        propertyAnimator.addCompletion { (_) in
+            view.layer.borderWidth = 0
+        }
+        propertyAnimator.startAnimation()
+    }
+
+    func shake5(completion: (() -> Void)? = nil) {
+        let speed = 0.75
+        let time = 1.0 * speed - 0.15
+        let timeFactor = CGFloat(time / 4)
+        let animationDelays = [timeFactor, timeFactor * 2, timeFactor * 3]
+
+        let shakeAnimator = UIViewPropertyAnimator(duration: time, dampingRatio: 0.3)
+        // left, right, left, center
+        shakeAnimator.addAnimations({
+            self.transform = CGAffineTransform(translationX: 10, y: 0)
+        })
+        shakeAnimator.addAnimations({
+            self.transform = CGAffineTransform(translationX: -10, y: 0)
+        }, delayFactor: animationDelays[0])
+        shakeAnimator.addAnimations({
+            self.transform = CGAffineTransform(translationX: 10, y: 0)
+        }, delayFactor: animationDelays[1])
+        shakeAnimator.addAnimations({
+            self.transform = CGAffineTransform(translationX: 0, y: 0)
+        }, delayFactor: animationDelays[2])
+        shakeAnimator.startAnimation()
+
+        shakeAnimator.addCompletion { _ in
+            completion?()
+        }
+
+        shakeAnimator.startAnimation()
+    }
+
+    func shake6(duration: CGFloat = 0.15, repeatCount: Float = 3, angle: Float = Float.pi / 40, completion: (() -> Void)? = nil) {
+        let rotationAnimation = CABasicAnimation.init(keyPath: "transform.rotation.z")
+        rotationAnimation.duration = TimeInterval(duration/CGFloat(repeatCount))
+        rotationAnimation.repeatCount = repeatCount
+        rotationAnimation.autoreverses = true
+        rotationAnimation.fromValue = -angle
+        rotationAnimation.toValue = angle
+        rotationAnimation.isRemovedOnCompletion = true
+
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            if let completion = completion {
+                completion()
+            }
+        }
+        layer.add(rotationAnimation, forKey: "shakeAnimation")
+        CATransaction.commit()
     }
 }
