@@ -9,7 +9,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
-    private let postModel = ProfilePosts.createProfilePosts()
+    var postModel = ProfilePosts.createProfilePosts()
     private let gallery = GalleryModel.createMockModel()
     private let header = ProfileHeaderView()
 
@@ -19,7 +19,7 @@ final class ProfileViewController: UIViewController {
     private var avatarCenterY = NSLayoutConstraint()
     private var avatarConstraints = [NSLayoutConstraint]()
 
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
@@ -57,7 +57,6 @@ final class ProfileViewController: UIViewController {
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(tableView)
         view.addSubview(baseplateForExpandedAvatar)
         view.addSubview(transparentBaseplateForAvatarView)
         baseplateForExpandedAvatar.addSubview(buttonForCloseExpandedAvatarView)
@@ -67,6 +66,7 @@ final class ProfileViewController: UIViewController {
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        view.addSubview(tableView)
         layout()
         print("2_View will layout subviews")
     }
@@ -171,12 +171,23 @@ final class ProfileViewController: UIViewController {
         let tapLocation = sender.location(in: tableView) //получаем координату тапа
         if let indexPath = tableView.indexPathForRow(at: tapLocation) { //получаем индексПаф по координате тапа в таблице
             postModel[indexPath.row].likes += 1
-            //добираемся до ячейки и лейбла лайков
-            let cell = tableView.cellForRow(at: indexPath) as? ProfileTableViewCell
-            cell?.likesLabelView.text = "Likes: " + postModel[indexPath.row].likes.description
-            //перезагружаем строки таблицы по индексПаф
-            tableView.reloadRows(at: [indexPath], with: .none)
+            tableView.reloadRows(at: [indexPath], with: .none) //перезагружаем строки таблицы по индексПаф
             }
+    }
+    @objc func showPostDetailVC(_ sender: UITapGestureRecognizer) {
+        print("Tapped on post image")
+        let tapLocation = sender.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: tapLocation) {
+            postModel[indexPath.row].views += 1
+
+            let detailPostVC = PostViewController()
+            detailPostVC.post = postModel[indexPath.row]
+            detailPostVC.indexPath = indexPath
+            detailPostVC.delegate = self // 2.т.е. "главный" - это PostViewController, у которого есть делегат (ProfileViewController), который принимает инфу и выполняет какую-то работу - обновляет таблицу в ext после увеличения лайков в PostViewController - так надо понимать - или кто есть делегат и кто кому что делегирует?? помогите разобраться, плиз
+//            detailPostVC.setPostModel()
+            navigationController?.pushViewController(detailPostVC, animated: true)
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
 }
 
@@ -209,12 +220,26 @@ extension ProfileViewController: UITableViewDataSource {
             cellForPosts.setupCell(model: postModel[indexPath.row])
             cellForPosts.selectionStyle = .none
 
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(increaseLikesAtTap(_:)))
-            cellForPosts.likesLabelView.addGestureRecognizer(tapGestureRecognizer)
+            let tapGestureAtLikesRecognizer = UITapGestureRecognizer(target: self, action: #selector(increaseLikesAtTap(_:)))
+            cellForPosts.likesLabelView.addGestureRecognizer(tapGestureAtLikesRecognizer)
             cellForPosts.likesLabelView.isUserInteractionEnabled = true
+
+            let tapGestureAtImageRecognizer = UITapGestureRecognizer(target: self, action: #selector(showPostDetailVC(_:)))
+            cellForPosts.imageViewForPost.addGestureRecognizer(tapGestureAtImageRecognizer)
+            cellForPosts.imageViewForPost.isUserInteractionEnabled = true
             return cellForPosts
 
         default: return UITableViewCell()
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            postModel.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 }
@@ -251,9 +276,17 @@ extension ProfileViewController: UITableViewDelegate {
         let galleryVC = GallaryCollectionViewController()
         if indexPath.section == 0 {
             navigationController?.pushViewController(galleryVC, animated: true)
-        }
-        else if indexPath.section == 1 {
-//            print(postModel[indexPath.row].likes)
+        } else if indexPath.section != 0 {
+
         }
     }
 }
+
+
+extension ProfileViewController: PostVCLikesDelegate {
+
+    func updateLikes(_ likes: Int, at indexPath: IndexPath) { //вызывается, когда PostViewController обновляет и передает новое количество лайков этому контроллеру (ProfileViewController), чтобы он по получению информации сделал некоторую работу
+        tableView.reloadRows(at: [indexPath], with: .none) //...чтобы обновил нужную ячейку таблицы
+    }
+}
+

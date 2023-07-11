@@ -24,7 +24,7 @@ class ProfileTableViewCell: UITableViewCell {
         return postLabel
     }()
 
-    private lazy var imageViewForPost: UIImageView = {
+    lazy var imageViewForPost: UIImageView = {
         let postImage = UIImageView()
         postImage.translatesAutoresizingMaskIntoConstraints = false
         postImage.contentMode = .scaleAspectFit
@@ -50,7 +50,7 @@ class ProfileTableViewCell: UITableViewCell {
         return likesLabel
     }()
 
-    private lazy var viewsLabelView: UILabel = {
+    lazy var viewsLabelView: UILabel = {
         let viewsLabel = UILabel()
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         viewsLabel.font = .systemFont(ofSize: 16, weight: .regular)
@@ -81,7 +81,7 @@ class ProfileTableViewCell: UITableViewCell {
     }
 
     func setupCell(model: ProfilePosts) {
-        labelView.text = model.author
+        labelView.text = model.title
         imageViewForPost.image = UIImage(named: model.image)
         descriptionLabelView.text = model.description
         likesLabelView.text = "Likes: " + model.likes.description
